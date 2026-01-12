@@ -1,0 +1,9 @@
+echo "# 08Jan_Parth_Python" >> README.md
+
+
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/ParthG2809/08Jan_Parth_Python.git
+git push -u origin main
