@@ -6,13 +6,12 @@ student_name = "Parth Goyal"
 subject_one_marks = 85
 subject_two_marks = 90
 subject_three_marks = 88
-subject_four_marks = 46
-total_marks = 400
+total_marks = 300
 
 
 # Calculate total and average marks
-total_marks_obtained = subject_one_marks + subject_two_marks + subject_three_marks + subject_four_marks
-average_marks = total_marks_obtained / 4
+total_marks_obtained = subject_one_marks + subject_two_marks + subject_three_marks
+average_marks = total_marks_obtained / 3
 
 #This is multi line/dialogue comment
 """Percentage of the student
