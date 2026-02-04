@@ -17,7 +17,10 @@ target_string = input("Enter the target string: ")
 
 for i in List1:
     if i == target_string :
-        print("The target string is found ")
+        print(f"The target string is found at {List1.index(i)}: {target_string}")
+        break
+else:
+    print("Item not in the list")
 
 #Practical Example 4: Print this pattern using nested for loop: markdown Copy code * ** *** **** ***** 
 print("\n")
