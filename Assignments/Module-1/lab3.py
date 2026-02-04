@@ -4,10 +4,10 @@
 print("The basics of Python")
 
 #Practical Example 2 - Creating variables in Python
-id = 25          # Integer
-name = "Parth"    # String
-percentage = 89.5         # Float
-passed = True          # Boolean
+id = 25 # Integer
+name = "Parth" # String
+percentage = 89.5 # Float
+passed = True # Boolean
 
 
 #Practical Example 3: How to take user input using the input() function
