@@ -1,4 +1,5 @@
 # Practical Example 1: Write a Python program to demonstrate string slicing.
+print("String Slicing")
 str = "Basics of Python"
 print(str)
 print(str[0])
@@ -11,6 +12,7 @@ print(str[::-1])
 print(str[:])
 
 # Practical Example 2: Write a Python program that manipulates and prints strings using various string methods.
+print("\nString Manipulation")
 str = "Welcome to Python"
 print(str)
 print("Uppercase:", str.upper())

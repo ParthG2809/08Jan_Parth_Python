@@ -11,7 +11,7 @@ else:
     print(f"{number} is equal to the comparison number {fix_number}")
 
 # Practical Example 6: Write a Python program to check if a number is prime using if_else
-
+print("\n")
 number = int(input("Enter a number:"))
 
 if number > 1:
@@ -25,6 +25,7 @@ else:
     print("The number is Not Prime")
 
 # Practical Example 7: Write a Python program to calculate grades based on percentage using if-else ladder
+print("\n")
 percentage = float(input("Enter percentage:"))
 
 if percentage >= 90:
@@ -39,6 +40,7 @@ else:
     print("Grade: Fail")
 
 # Practical Example 8: Write a Python program to check if a person is eligible to donate blood using a nested if. 
+print("\n")
 age = int(input("Enter age: "))
 weight = int(input("Enter weight (in kg): "))
 

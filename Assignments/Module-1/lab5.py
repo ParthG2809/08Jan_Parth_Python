@@ -17,7 +17,7 @@ target_string = input("Enter the target string: ")
 
 for i in List1:
     if i == target_string :
-        print(f"The target string is found at {List1.index(i)}: {target_string}")
+        print(f"The target string is found at index {List1.index(i)}: {target_string}")
         break
 else:
     print("Item not in the list")
