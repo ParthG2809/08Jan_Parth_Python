@@ -1,0 +1,458 @@
+{% extends 'accounts/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Home | WatchVerse{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<style>
+    .swiper-hero {
+        width: 100%;
+        height: 85vh;
+    }
+    .hero-slide {
+        position: relative;
+        overflow: hidden;
+    }
+    .hero-overlay-b {
+        background: linear-gradient(to top, #050505 0%, transparent 60%);
+    }
+    .hero-overlay-r {
+        background: linear-gradient(to right, #050505 0%, transparent 60%);
+    }
+    .swiper-pagination-bullet {
+        background: #fff;
+        opacity: 0.3;
+    }
+    .swiper-pagination-bullet-active {
+        background: #e50914 !important;
+        opacity: 1;
+        width: 30px;
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Slider Section -->
+<div class="swiper swiper-hero">
+    <div class="swiper-wrapper">
+        {% for item in featured %}
+        <div class="swiper-slide hero-slide">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 z-0">
+                {% if item.get_backdrop_url %}
+                    <img src="{{ item.get_backdrop_url }}" class="w-full h-full object-cover" alt="{{ item.title }}">
+                {% else %}
+                    <div class="w-full h-full bg-zinc-900"></div>
+                {% endif %}
+                <div class="absolute inset-0 hero-overlay-b"></div>
+                <div class="absolute inset-0 hero-overlay-r"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="relative z-10 max-w-7xl mx-auto px-6 h-full flex items-center">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
+                    <div class="lg:col-span-7 space-y-8">
+                        <div class="flex items-center gap-4 animate-fade-in">
+                            <span class="verdict-badge verdict-peak px-6 py-2 text-sm">👑 PEAK VERDICT</span>
+                            <div class="flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-md rounded-full border border-white/10">
+                                <span class="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Watch Score</span>
+                                <span class="text-[#e50914] font-black text-lg">{{ item.rating_avg }}</span>
+                            </div>
+                        </div>
+
+                        <h1 class="text-6xl md:text-8xl font-black tracking-tighter leading-none uppercase italic" style="text-shadow: 0 0 50px rgba(0,0,0,0.5);">
+                            {{ item.title }}
+                        </h1>
+
+                        <p class="text-zinc-300 text-lg md:text-xl max-w-xl leading-relaxed line-clamp-3">
+                            {{ item.description }}
+                        </p>
+
+                        <div class="flex flex-wrap items-center gap-4 pt-4">
+                            <a href="{% url 'media-detail' item.id %}" class="btn-premium px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-3">
+                                <i class="fa-solid fa-play"></i> View Details
+                            </a>
+                            <button class="bg-white/10 hover:bg-white/20 px-10 py-5 rounded-2xl border border-white/10 font-black text-sm uppercase tracking-widest transition-all">
+                                <i class="fa-solid fa-plus mr-3"></i> Watchlist
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Floating Poster -->
+                    <div class="hidden lg:block lg:col-span-5 relative">
+                        <div class="glass-card p-4 rounded-[2.5rem] w-80 mx-auto rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl">
+                            {% if item.get_poster_url %}
+                                <img src="{{ item.get_poster_url }}" class="w-full h-[400px] object-cover rounded-[2rem]" alt="{{ item.title }}">
+                            {% endif %}
+                            <div class="mt-6 flex justify-between items-center px-2">
+                                <div>
+                                    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">{{ item.media_type }}</p>
+                                    <h3 class="text-lg font-black">{{ item.release_year }}</h3>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Global</p>
+                                    <p class="text-[#e50914] font-black">Trending #{{ forloop.counter }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Pagination -->
+    <div class="swiper-pagination !bottom-10 !left-6 !text-left !w-auto"></div>
+</div>
+
+<div class="max-w-7xl mx-auto px-6 space-y-24 mt-12 relative z-20">
+    
+    <!-- Trending Tonight -->
+    <section class="space-y-8">
+        <div class="flex items-end justify-between">
+            <div class="space-y-1">
+                <h2 class="text-3xl font-black tracking-tighter uppercase italic">Trending <span class="text-[#e50914]">Tonight</span></h2>
+                <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em]">Must-watch movies and shows right now</p>
+            </div>
+            <a href="#" class="text-xs font-black uppercase tracking-widest text-zinc-500 hover:text-blue-500 transition-colors">See All <i class="fa-solid fa-arrow-right ml-2"></i></a>
+        </div>
+
+        <!-- Horizontal Sliders -->
+        <div class="space-y-12">
+            <!-- Movies Slider -->
+            <div class="space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-widest text-zinc-400">Movies</h3>
+                <div class="slider-container no-scrollbar">
+                    {% for item in trending_movies %}
+                    <a href="{% url 'media-detail' item.id %}" class="slider-item w-48 group cursor-pointer">
+                        <div class="relative rounded-2xl overflow-hidden glass-card">
+                            {% if item.get_poster_url %}
+                                <img src="{{ item.get_poster_url }}" class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ item.title }}">
+                            {% else %}
+                                <div class="w-full h-72 bg-zinc-800 flex items-center justify-center"><i class="fa-solid fa-clapperboard text-2xl text-zinc-700"></i></div>
+                            {% endif %}
+                            <div class="absolute top-2 right-2">
+                                {% if item.verdict == 'PEAK' %}
+                                    <span class="verdict-badge verdict-peak">👑</span>
+                                {% elif item.verdict == 'WW' %}
+                                    <span class="verdict-badge verdict-ww">🔵</span>
+                                {% endif %}
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <span class="text-[#e50914] font-black text-sm">{{ item.rating_avg }}</span>
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Watch Now</p>
+                            </div>
+                        </div>
+                        <h4 class="mt-3 text-sm font-bold truncate group-hover:text-blue-500 transition-colors">{{ item.title }}</h4>
+                        <p class="text-[10px] text-zinc-600 font-bold">{{ item.release_year }}</p>
+                    </a>
+{% endfor %}
+                </div>
+            </div>
+
+            <!-- Anime Slider -->
+            <div class="space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-widest text-zinc-400">Anime</h3>
+                <div class="slider-container no-scrollbar">
+                    {% for item in trending_anime %}
+                    <a href="{% url 'media-detail' item.id %}" class="slider-item w-48 group cursor-pointer">
+                        <div class="relative rounded-2xl overflow-hidden glass-card">
+                            {% if item.get_poster_url %}
+                                <img src="{{ item.get_poster_url }}" class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ item.title }}">
+                            {% else %}
+                                <div class="w-full h-72 bg-zinc-800 flex items-center justify-center"><i class="fa-solid fa-clapperboard text-2xl text-zinc-700"></i></div>
+                            {% endif %}
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <span class="text-blue-500 font-black text-sm">{{ item.rating_avg }}</span>
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Watch Now</p>
+                            </div>
+                        </div>
+                        <h4 class="mt-3 text-sm font-bold truncate group-hover:text-blue-500 transition-colors">{{ item.title }}</h4>
+                        <p class="text-[10px] text-zinc-600 font-bold">{{ item.release_year }}</p>
+                    </a>
+{% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Peak Picks -->
+    <section class="space-y-12 bg-gradient-to-b from-[#e50914]/5 to-transparent p-12 rounded-[3rem] border border-[#e50914]/10">
+        <div class="text-center space-y-2">
+            <h2 class="text-4xl font-black tracking-tighter uppercase italic">Community <span class="text-glow text-[#e50914]">Peak Picks</span></h2>
+            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em]">The highest community-rated masterpieces</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+            {% for item in peak_picks %}
+            <a href="{% url 'media-detail' item.id %}" class="space-y-4 group">
+                <div class="relative aspect-[2/3] rounded-[2rem] overflow-hidden glass-card">
+                    {% if item.get_poster_url %}
+                        <img src="{{ item.get_poster_url }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ item.title }}">
+                    {% else %}
+                        <div class="w-full h-full bg-zinc-900 flex items-center justify-center text-zinc-800 text-4xl italic">PEAK</div>
+                    {% endif %}
+                    <div class="absolute top-4 left-4">
+                        <span class="verdict-badge verdict-peak">👑 PEAK</span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
+                        <p class="text-[#e50914] font-black text-2xl">{{ item.rating_avg }}</p>
+                    </div>
+                </div>
+                <div class="text-center px-2">
+                    <h4 class="font-black truncate">{{ item.title }}</h4>
+                    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">{{ item.genres.first.name }}</p>
+                </div>
+            </a>
+{% endfor %}
+        </div>
+    </section>
+
+    <!-- Continue Watching -->
+    {% if continue_watching %}
+    <section class="space-y-8">
+        <div class="flex items-center gap-4">
+            <h2 class="text-3xl font-black tracking-tighter uppercase italic">Continue <span class="text-[#e50914]">Watching</span></h2>
+            <div class="h-px flex-1 bg-white/5"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {% for progress in continue_watching %}
+            <a href="{% url 'media-detail' progress.media_item.id %}" class="glass-card rounded-2xl overflow-hidden group cursor-pointer block">
+                <div class="relative h-32">
+                    {% if progress.media_item.backdrop %}
+                        <img src="{{ progress.media_item.backdrop.url }}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="">
+                    {% elif progress.media_item.tmdb_backdrop_path %}
+                        <img src="https://image.tmdb.org/t/p/w500{{ progress.media_item.tmdb_backdrop_path }}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="">
+                    {% else %}
+                        <div class="w-full h-full bg-zinc-800"></div>
+                    {% endif %}
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center"><i class="fa-solid fa-play ml-1"></i></div>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
+                        <div class="h-full bg-[#e50914]" style="width: {{ progress.progress_percent }}%"></div>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h4 class="text-sm font-bold truncate">{{ progress.media_item.title }}</h4>
+                    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
+                        {{ progress.progress_percent }}% Complete
+                    </p>
+                </div>
+            </a>
+{% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Community Reviews & Discussions -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <!-- Latest Reviews -->
+        <section class="lg:col-span-8 space-y-8">
+            <h2 class="text-2xl font-black tracking-tighter uppercase italic">Latest Community <span class="text-[#e50914]">Reviews</span></h2>
+            
+            <div class="space-y-6">
+                {% for review in latest_reviews %}
+                <div class="glass-card rounded-[2rem] p-8 flex gap-6">
+                    <div class="shrink-0">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center font-bold">
+                            {{ review.user.full_name|slice:":1" }}
+                        </div>
+                    </div>
+                    <div class="flex-1 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="font-black text-white">{{ review.user.full_name }} <span class="text-zinc-600 font-medium text-xs ml-2">reviewed</span> <span class="text-[#e50914]">{{ review.media_item.title }}</span></h4>
+                                <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">{{ review.created_at|timesince }} ago</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                {% if review.verdict == 'PEAK' %}
+                                    <span class="verdict-badge verdict-peak">👑 PEAK</span>
+                                {% elif review.verdict == 'WW' %}
+                                    <span class="verdict-badge verdict-ww">🔵 WORTH WATCHING</span>
+                                {% endif %}
+                                <div class="px-3 py-1 bg-white/5 rounded-lg border border-white/10 text-xs font-black text-[#e50914]">
+                                    {{ review.rating }}/10
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-zinc-400 text-sm leading-relaxed italic">
+                            "{{ review.comment|truncatewords:40 }}"
+                        </p>
+                        <div class="flex items-center gap-6 pt-2">
+                            <button class="text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-colors">
+                                <i class="fa-solid fa-heart mr-2"></i> {{ review.likes_count }} Likes
+                            </button>
+                            <button class="text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-colors">
+                                <i class="fa-solid fa-comment mr-2"></i> Reply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Trending Discussions -->
+        <section class="lg:col-span-4 space-y-8">
+            <h2 class="text-2xl font-black tracking-tighter uppercase italic">Trending <span class="text-accent">Discussions</span></h2>
+            
+            <div class="glass-card rounded-[2.5rem] p-8 space-y-8">
+                {% for disc in discussions %}
+                <div class="space-y-3 group cursor-pointer">
+                    <h4 class="font-black text-lg group-hover:text-blue-500 transition-colors">{{ disc.title }}</h4>
+                    <p class="text-zinc-500 text-xs line-clamp-2">{{ disc.content }}</p>
+                    <div class="flex items-center justify-between pt-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center text-[8px] font-bold">{{ disc.user.full_name|slice:":1" }}</div>
+                            <span class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">{{ disc.user.full_name }}</span>
+                        </div>
+                        <span class="text-[9px] text-[#e50914] font-black uppercase tracking-widest">{{ disc.likes_count }} active</span>
+                    </div>
+                    {% if not forloop.last %}<div class="h-px bg-white/5 mt-6"></div>{% endif %}
+                </div>
+                {% endfor %}
+                
+                <button class="w-full py-4 rounded-2xl border border-dashed border-white/10 text-zinc-500 hover:text-white hover:border-white/20 text-xs font-black uppercase tracking-widest transition-all">
+                    Start a New Discussion
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Hidden Gems -->
+    <section class="space-y-8">
+        <div class="flex items-end justify-between">
+            <div class="space-y-1">
+                <h2 class="text-3xl font-black tracking-tighter uppercase italic"><span class="text-[#e50914]">Hidden</span> Gems</h2>
+                <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em]">Underrated masterpieces you might have missed</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {% for gem in hidden_gems %}
+            <a href="{% url 'media-detail' gem.id %}" class="glass-card rounded-[2rem] p-6 group">
+                <div class="relative rounded-xl overflow-hidden aspect-video">
+                    {% if gem.get_backdrop_url %}
+                        <img src="{{ gem.get_backdrop_url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="">
+                    {% else %}
+                        <div class="w-full h-full bg-zinc-900"></div>
+                    {% endif %}
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    <div class="absolute top-3 left-3">
+                        <span class="px-3 py-1 bg-red-500/20 text-[#e50914] text-[9px] font-black uppercase tracking-widest rounded-full border border-red-500/30">GEM</span>
+                    </div>
+                </div>
+                <div class="mt-6 space-y-2">
+                    <h4 class="font-black text-lg">{{ gem.title }}</h4>
+                    <p class="text-zinc-500 text-xs line-clamp-2 leading-relaxed">
+                        {{ gem.description }}
+                    </p>
+                    <div class="pt-4 flex items-center justify-between">
+                        <span class="text-[#e50914] font-black text-sm">{{ gem.rating_avg }}</span>
+                        <button class="text-white hover:text-blue-500 transition-colors"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </a>
+{% endfor %}
+        </div>
+    </section>
+
+    <!-- Popular Lists & Collections -->
+    <section class="space-y-12">
+        <div class="text-center space-y-2">
+            <h2 class="text-4xl font-black tracking-tighter uppercase italic">Curated <span class="text-[#e50914]">Collections</span></h2>
+            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em]">Explore hand-picked lists from our top curators</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for collection in collections %}
+            <div class="glass-card rounded-[2.5rem] p-8 space-y-6 group cursor-pointer">
+                <div class="grid grid-cols-2 gap-3 h-48">
+                    {% for item in collection.items.all|slice:":3" %}
+                    <div class="{% if forloop.first %}row-span-2{% endif %} rounded-2xl overflow-hidden">
+                        {% if item.poster %}
+                            <img src="{{ item.poster.url }}" class="w-full h-full object-cover" alt="">
+                        {% elif item.tmdb_poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ item.tmdb_poster_path }}" class="w-full h-full object-cover" alt="">
+                        {% else %}
+                            <div class="w-full h-full bg-zinc-800"></div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    {% if collection.items.count > 3 %}
+                    <div class="bg-white/5 rounded-2xl flex items-center justify-center text-zinc-500 font-black">
+                        +{{ collection.items.count|add:"-3" }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <h3 class="text-2xl font-black group-hover:text-[#e50914] transition-colors">{{ collection.title }}</h3>
+                    <p class="text-zinc-500 text-sm mt-2">{{ collection.items.count }} titles • By {{ collection.user.full_name }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Genre Sliders -->
+    {% for section in genre_sections %}
+    <section class="space-y-8">
+        <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-black tracking-tighter uppercase italic">{{ section.genre.name }} <span class="text-[#e50914]">Picks</span></h2>
+            <a href="#" class="text-xs font-black uppercase tracking-widest text-zinc-500 hover:text-white transition-colors">Browse All</a>
+        </div>
+        
+        <div class="slider-container no-scrollbar">
+            {% for item in section.items %}
+            <a href="{% url 'media-detail' item.id %}" class="slider-item w-44 group">
+                <div class="relative rounded-2xl overflow-hidden glass-card">
+                    {% if item.poster %}
+                        <img src="{{ item.poster.url }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500" alt="">
+                    {% elif item.tmdb_poster_path %}
+                        <img src="https://image.tmdb.org/t/p/w500{{ item.tmdb_poster_path }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500" alt="">
+                    {% else %}
+                        <div class="w-full h-64 bg-zinc-800 flex items-center justify-center"><i class="fa-solid fa-clapperboard text-2xl text-zinc-700"></i></div>
+                    {% endif %}
+                    <div class="absolute bottom-2 left-2">
+                        {% if item.verdict == 'PEAK' %}
+                            <span class="verdict-badge verdict-peak text-[8px] py-1 px-3">👑</span>
+                        {% elif item.verdict == 'WW' %}
+                            <span class="verdict-badge verdict-ww text-[8px] py-1 px-3">🔵</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <h4 class="mt-3 text-xs font-black truncate">{{ item.title }}</h4>
+            </a>
+{% endfor %}
+        </div>
+    </section>
+    {% endfor %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    const swiper = new Swiper('.swiper-hero', {
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true
+        }
+    });
+</script>
+{% endblock %}

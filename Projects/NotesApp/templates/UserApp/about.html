@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-16 transition-colors duration-300">
+    <!-- Header -->
+    <div class="text-center mb-20">
+        <h1 class="text-6xl font-extrabold text-black dark:text-white mb-6 uppercase tracking-tighter">About <span class="font-light">NotesApp</span></h1>
+        <p class="text-xl text-gray-500 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">Elevating simplicity in note-taking and community knowledge sharing. We are more than just a notebook; we are a library for the future.</p>
+    </div>
+
+    <!-- Slideshow Section -->
+    <div class="mb-24 relative group overflow-hidden rounded-[3rem] shadow-2xl h-[500px]">
+        <div id="slideshow" class="flex transition-transform duration-700 ease-in-out h-full">
+            <div class="min-w-full relative h-full">
+                <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover brightness-50" alt="Note Taking">
+                <div class="absolute inset-0 flex items-center justify-center text-center p-10">
+                    <h2 class="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter max-w-4xl">Capture Your Thoughts with Precision</h2>
+                </div>
+            </div>
+            <div class="min-w-full relative h-full">
+                <img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover brightness-50" alt="Organization">
+                <div class="absolute inset-0 flex items-center justify-center text-center p-10">
+                    <h2 class="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter max-w-4xl">Organize Your Life Seamlessly</h2>
+                </div>
+            </div>
+            <div class="min-w-full relative h-full">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover brightness-50" alt="Collaboration">
+                <div class="absolute inset-0 flex items-center justify-center text-center p-10">
+                    <h2 class="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter max-w-4xl">Collaborate and Share Knowledge</h2>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slideshow Controls -->
+        <button onclick="moveSlide(-1)" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-4 rounded-full transition opacity-0 group-hover:opacity-100">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button onclick="moveSlide(1)" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-4 rounded-full transition opacity-0 group-hover:opacity-100">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+    </div>
+
+    <!-- Mission & Vision -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center mb-24">
+        <div class="order-2 md:order-1">
+            <span class="text-xs font-black text-black dark:text-white uppercase tracking-[0.3em] mb-4 block">Our Values</span>
+            <h2 class="text-4xl font-bold text-black dark:text-white mb-8 tracking-tighter">Pioneering the Digital <span class="font-light">Notebook Era</span></h2>
+            <div class="space-y-6">
+                <div class="flex gap-4">
+                    <div class="shrink-0 w-12 h-12 bg-black dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-black">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-black dark:text-white text-lg">Speed & Simplicity</h4>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Write faster, organize better, and find what you need in seconds.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="shrink-0 w-12 h-12 bg-black dark:bg-white rounded-2xl flex items-center justify-center text-white dark:text-black">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-4.514A9.01 9.01 0 0012 2c4.739 0 8.751 3.51 8.97 8.199l.024.512a9.04 9.04 0 01-2.22 5.626l-4.242 4.242a1 1 0 01-1.414 0l-4.242-4.242a9.04 9.04 0 01-2.22-5.626l.024-.512z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-black dark:text-white text-lg">Community Verified</h4>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Our unique moderation system ensures only quality content stays.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="order-1 md:order-2">
+            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1200" class="rounded-[3rem] shadow-2xl" alt="Creative work">
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="bg-black dark:bg-zinc-900 rounded-[3rem] p-16 text-center transition-colors">
+        <h2 class="text-4xl font-bold text-white mb-16 tracking-tighter">Trusted by <span class="font-light">Visionaries</span></h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="p-8 bg-zinc-800/50 backdrop-blur-sm rounded-3xl text-left border border-white/5">
+                <div class="flex text-yellow-400 mb-4 italic">★★★★★</div>
+                <p class="text-gray-300 mb-6 italic">"NotesApp transformed how I handle project documentation. The clean interface is a breath of fresh air."</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-zinc-700"></div>
+                    <div>
+                        <h5 class="font-bold text-white text-sm">Alex Rivers</h5>
+                        <p class="text-zinc-500 text-xs uppercase font-bold tracking-widest">Product Designer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-8 bg-zinc-800/50 backdrop-blur-sm rounded-3xl text-left border border-white/5">
+                <div class="flex text-yellow-400 mb-4 italic">★★★★★</div>
+                <p class="text-gray-300 mb-6 italic">"The verified notes section is incredible. I can always find high-quality Python snippets for my work."</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-zinc-700"></div>
+                    <div>
+                        <h5 class="font-bold text-white text-sm">Sarah Chen</h5>
+                        <p class="text-zinc-500 text-xs uppercase font-bold tracking-widest">Software Engineer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-8 bg-zinc-800/50 backdrop-blur-sm rounded-3xl text-left border border-white/5">
+                <div class="flex text-yellow-400 mb-4 italic">★★★★★</div>
+                <p class="text-gray-300 mb-6 italic">"Simple, powerful, and aesthetically pleasing. Finally, a note app that feels premium and focused."</p>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-zinc-700"></div>
+                    <div>
+                        <h5 class="font-bold text-white text-sm">David Miller</h5>
+                        <p class="text-zinc-500 text-xs uppercase font-bold tracking-widest">Digital Architect</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.getElementById('slideshow');
+    const totalSlides = slides.children.length;
+    let slideInterval;
+
+    function moveSlide(direction) {
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function startAutoSlide() {
+        slideInterval = setInterval(() => moveSlide(1), 3000);
+    }
+
+    function stopAutoSlide() {
+        clearInterval(slideInterval);
+    }
+
+    // Initialize auto-slide
+    startAutoSlide();
+
+    // Pause on hover
+    const slideshowContainer = slides.parentElement;
+    slideshowContainer.addEventListener('mouseover', stopAutoSlide);
+    slideshowContainer.addEventListener('mouseout', startAutoSlide);
+</script>
+{% endblock %}

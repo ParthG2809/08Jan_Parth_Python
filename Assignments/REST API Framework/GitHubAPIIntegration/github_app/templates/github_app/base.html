@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub API Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        main {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            min-height: 400px;
+        }
+        .messages {
+            list-style: none;
+            padding: 0;
+        }
+        .messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .messages .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .messages .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form div {
+            margin-bottom: 1rem;
+        }
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        form input[type="text"],
+        form input[type="password"],
+        form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        form button, .btn {
+            padding: 0.5rem 1rem;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: fit-content;
+            text-decoration: none;
+            display: inline-block;
+        }
+        form button:hover, .btn:hover {
+            background-color: #555;
+        }
+        .repo-list {
+            list-style: none;
+            padding: 0;
+        }
+        .repo-list li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .repo-list li a {
+            font-weight: bold;
+            color: #0366d6;
+            text-decoration: none;
+        }
+        .repo-list li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GitHub API Integration</h1>
+    </header>
+    <nav>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'create_repository' %}">Create Repository</a>
+        {% if request.session.github_token %}
+            <a href="{% url 'github_logout' %}" style="color: #ffcccc;">Logout</a>
+        {% else %}
+            <a href="{% url 'github_login' %}" style="color: #ccffcc;">Login with GitHub</a>
+        {% endif %}
+    </nav>
+    <main>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

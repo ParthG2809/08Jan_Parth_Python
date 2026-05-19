@@ -1,0 +1,29 @@
+{% extends 'github_app/base.html' %}
+
+{% block content %}
+<h2>Repositories</h2>
+<a href="{% url 'index' %}" style="display: inline-block; margin-bottom: 15px; color: #0366d6; text-decoration: none;">&larr; Back to Search</a>
+
+{% if repos %}
+    <p>Found {{ repos|length }} repositories:</p>
+    <ul class="repo-list">
+        {% for repo in repos %}
+            <li>
+                <a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a>
+                {% if repo.description %}
+                    <p style="margin: 5px 0 0 0; color: #555; font-size: 0.9em;">{{ repo.description }}</p>
+                {% endif %}
+                <div style="margin-top: 5px; font-size: 0.8em; color: #666;">
+                    <span>⭐ {{ repo.stargazers_count }}</span>
+                    <span style="margin-left: 10px;">🍴 {{ repo.forks_count }}</span>
+                    {% if repo.language %}
+                        <span style="margin-left: 10px;">📜 {{ repo.language }}</span>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No repositories found.</p>
+{% endif %}
+{% endblock %}

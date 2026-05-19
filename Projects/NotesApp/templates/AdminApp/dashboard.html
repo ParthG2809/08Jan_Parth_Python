@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-10 transition-colors duration-300">
+    <div class="mb-10 flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-bold text-black dark:text-white uppercase tracking-tighter">Admin <span class="font-light">Dashboard</span></h1>
+            <p class="text-gray-500 dark:text-gray-400">System overview and analytics</p>
+        </div>
+        <div class="flex gap-4">
+            <a href="{% url 'admin_notes' %}" class="px-6 py-2 bg-black dark:bg-white text-white dark:text-black font-bold rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition shadow-lg">Review Notes</a>
+            <a href="{% url 'admin_users' %}" class="px-6 py-2 border border-black dark:border-white text-black dark:text-white font-bold rounded-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">Manage Users</a>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
+            <p class="text-xs font-bold text-gray-400 dark:text-zinc-500 uppercase tracking-widest mb-2">Total Users</p>
+            <p class="text-4xl font-extrabold text-black dark:text-white">{{ total_users }}</p>
+        </div>
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm ring-2 ring-black dark:ring-white ring-offset-4 ring-offset-transparent transition-colors">
+            <p class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-2">Pending Notes</p>
+            <p class="text-4xl font-extrabold text-black dark:text-white">{{ pending_notes }}</p>
+        </div>
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
+            <p class="text-xs font-bold text-gray-400 dark:text-zinc-500 uppercase tracking-widest mb-2">Verified Users</p>
+            <p class="text-4xl font-extrabold text-black dark:text-white">{{ verified_users }}</p>
+        </div>
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
+            <p class="text-xs font-bold text-gray-400 dark:text-zinc-500 uppercase tracking-widest mb-2">Total Notes</p>
+            <p class="text-4xl font-extrabold text-black dark:text-white">{{ total_notes }}</p>
+        </div>
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
+            <p class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-2">Unread Messages</p>
+            <p class="text-4xl font-extrabold text-black dark:text-white">{{ unread_messages }}</p>
+        </div>
+    </div>
+
+    <!-- Recent Users Table -->
+    <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm transition-colors">
+        <div class="p-6 border-b border-gray-50 dark:border-gray-800 flex justify-between items-center">
+            <h3 class="font-bold text-black dark:text-white uppercase tracking-widest text-sm">Recent User Registrations</h3>
+            <a href="{% url 'admin_users' %}" class="text-xs text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white font-bold uppercase underline">View All</a>
+        </div>
+        <table class="w-full text-left">
+            <thead class="bg-gray-50 dark:bg-zinc-800 text-xs font-bold text-gray-400 dark:text-zinc-500 uppercase">
+                <tr>
+                    <th class="px-6 py-4">User</th>
+                    <th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4">Joined</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
+                {% for user in recent_users %}
+                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800 transition">
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-black dark:text-white">{{ user.full_name }}</span>
+                            <span class="text-xs text-gray-400 dark:text-zinc-500">{{ user.email }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        {% if user.is_verified %}
+                        <span class="px-2 py-1 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs font-bold rounded-full border border-green-100 dark:border-green-900/30">Verified</span>
+                        {% else %}
+                        <span class="px-2 py-1 bg-gray-50 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 text-xs font-bold rounded-full border border-gray-100 dark:border-zinc-700">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ user.date_joined|date:"M d, Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

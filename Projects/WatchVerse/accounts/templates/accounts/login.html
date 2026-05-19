@@ -1,0 +1,66 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Login - WatchVerse{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-md glass-card rounded-2xl p-8 md:p-10 fade-in">
+    <h2 class="text-3xl font-bold mb-2">Welcome Back</h2>
+    <p class="text-gray-400 mb-8">Sign in to continue your cinematic journey.</p>
+
+    <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+            <input type="email" name="email" required 
+                class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white input-focus transition-all"
+                placeholder="you@example.com">
+        </div>
+
+        <div>
+            <div class="flex justify-between mb-2">
+                <label class="block text-sm font-medium text-gray-300">Password</label>
+                <a href="{% url 'forgot-password' %}" class="text-xs text-gray-400 hover:text-white hover:underline">Forgot Password?</a>
+            </div>
+            <div class="relative">
+                <input type="password" name="password" id="password" required 
+                    class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white input-focus transition-all"
+                    placeholder="••••••••">
+                <button type="button" onclick="togglePassword('password')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+                    <i class="fas fa-eye" id="password-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex items-center">
+            <input type="checkbox" name="remember_me" id="remember_me" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500 accent-red-600">
+            <label for="remember_me" class="ml-2 block text-sm text-gray-400">Remember me</label>
+        </div>
+
+        <button type="submit" 
+            class="w-full netflix-red hover:bg-red-700 text-white font-bold py-4 rounded-xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-red-600/20">
+            Sign In
+        </button>
+    </form>
+
+    <div class="mt-8 text-center text-gray-400">
+        New to WatchVerse? 
+        <a href="{% url 'register' %}" class="text-white hover:underline font-semibold ml-1">Create Account</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function togglePassword(id) {
+        const input = document.getElementById(id);
+        const icon = document.getElementById(id + '-icon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+</script>
+{% endblock %}

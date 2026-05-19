@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: 'Inter', Helvetica, Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .wrapper { width: 100%; table-layout: fixed; background-color: #f9f9f9; padding-bottom: 40px; }
+        .main { background-color: #ffffff; margin: 0 auto; width: 100%; max-width: 600px; border-spacing: 0; color: #000000; border-radius: 20px; overflow: hidden; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .header { background-color: #000000; padding: 40px; text-align: center; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 24px; letter-spacing: -1px; font-weight: 800; }
+        .content { padding: 40px; line-height: 1.6; }
+        .content h2 { font-size: 20px; font-weight: 700; margin-top: 0; }
+        .content p { color: #555555; font-size: 16px; }
+        .details { background-color: #f3f3f3; padding: 20px; border-radius: 12px; margin: 30px 0; border-left: 4px solid #000000; }
+        .footer { text-align: center; padding: 20px; color: #999999; font-size: 12px; }
+        .button { display: inline-block; padding: 15px 30px; background-color: #000000; color: #ffffff !important; text-decoration: none; border-radius: 10px; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <table class="main">
+            <tr>
+                <td class="header">
+                    <h1>NOTES<span style="font-weight: 300;">APP</span></h1>
+                </td>
+            </tr>
+            <tr>
+                <td class="content">
+                    <h2>Hi {{ full_name }},</h2>
+                    <p>Thank you for reaching out to us! We've received your message and our team is already on it.</p>
+                    
+                    <div class="details">
+                        <strong>Your Inquiry:</strong><br>
+                        <span style="font-size: 14px; color: #777;">Subject: {{ subject }}</span><br>
+                        <p style="margin-top: 10px; font-style: italic;">"{{ message }}"</p>
+                    </div>
+
+                    <p>We usually respond within 24 hours. In the meantime, feel free to explore your dashboard or check out our latest blog posts.</p>
+                    
+                    <a href="http://localhost:8000" class="button">Go to Dashboard</a>
+                    
+                    <p style="margin-top: 40px;">Best regards,<br><strong>The NotesApp Team</strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td class="footer">
+                    &copy; 2026 NotesApp. All rights reserved.<br>
+                    You are receiving this because you contacted us at notesapp.com
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

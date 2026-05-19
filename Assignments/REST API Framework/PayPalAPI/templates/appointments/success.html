@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-12">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8 text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Payment Successful!</h1>
+        <p class="text-gray-600 mb-8">Your appointment has been successfully booked. A confirmation email will be sent shortly.</p>
+        
+        <a href="{% url 'appointments:doctor_list' %}" class="block w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300">
+            Return to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

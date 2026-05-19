@@ -1,0 +1,84 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Verify Email - WatchVerse{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-md glass-card rounded-2xl p-8 md:p-10 fade-in">
+    <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-red-600/20 border border-red-600/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-envelope-open-text text-red-500 text-2xl"></i>
+        </div>
+        <h2 class="text-3xl font-bold mb-2">Check your email</h2>
+        <p class="text-gray-400">We've sent a 6-digit code to <br><span class="text-white font-semibold">{{ email }}</span></p>
+    </div>
+
+    <form method="POST" id="otp-form" class="space-y-8">
+        {% csrf_token %}
+        <div class="flex justify-between gap-2" id="otp-inputs">
+            <input type="text" maxlength="1" class="otp-box w-12 h-14 bg-black/40 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none otp-input transition-all">
+            <input type="text" maxlength="1" class="otp-box w-12 h-14 bg-black/40 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none otp-input transition-all">
+            <input type="text" maxlength="1" class="otp-box w-12 h-14 bg-black/40 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none otp-input transition-all">
+            <input type="text" maxlength="1" class="otp-box w-12 h-14 bg-black/40 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none otp-input transition-all">
+            <input type="text" maxlength="1" class="otp-box w-12 h-14 bg-black/40 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none otp-input transition-all">
+            <input type="text" maxlength="1" class="otp-box w-12 h-14 bg-black/40 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none otp-input transition-all">
+        </div>
+
+        <input type="hidden" name="otp" id="final-otp">
+
+        <button type="submit" 
+            class="w-full netflix-red hover:bg-red-700 text-white font-bold py-4 rounded-xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-red-600/20">
+            Verify & Proceed
+        </button>
+    </form>
+
+    <div class="mt-8 text-center text-gray-400">
+        Didn't receive the code? 
+        <button type="button" onclick="location.reload()" class="text-white hover:underline font-semibold ml-1">Resend Code</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const inputs = document.querySelectorAll('.otp-box');
+    const form = document.getElementById('otp-form');
+    const finalOtp = document.getElementById('final-otp');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            if (e.target.value.length > 1) {
+                e.target.value = e.target.value.slice(0, 1);
+            }
+            if (e.target.value && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+            updateFinalOtp();
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+    });
+
+    function updateFinalOtp() {
+        let otp = "";
+        inputs.forEach(input => {
+            otp += input.value;
+        });
+        finalOtp.value = otp;
+    }
+
+    form.addEventListener('submit', (e) => {
+        updateFinalOtp();
+        if (finalOtp.value.length !== 6) {
+            e.preventDefault();
+            alert('Please enter all 6 digits of the OTP.');
+        }
+    });
+
+    // Auto-focus first input
+    window.onload = () => inputs[0].focus();
+</script>
+{% endblock %}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Store</title>
+    <style>
+        h2{
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+        }
+
+        h1{
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+        }
+        .appliances {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        table{
+            height: auto;
+            width: 80%;
+            padding: auto;
+            margin: 0 auto;
+            border-collapse: collapse;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .buy-btn{
+        background-color: #04AA6D;
+        color: white;
+        border-radius: 5px;
+        padding: 12px 25px;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+    }
+    </style>
+</head>
+
+<body>
+    <h1>Products</h1>
+    <hr>
+
+    <!-- Category List -->
+    <div class="products">
+        <h2 style="text-align: left;">Product Categories</h2>
+        <ul class="appliances">
+            <li>Mobiles
+                <ol>
+                    <li>Redmi</li>
+                </ol>
+            </li>
+            <li>Laptops</li>
+            <li>Televisions</li>
+            <li>Home Appliances
+                <ol>
+                    <li>Washing Machines</li>
+                    <li>Refrigerators</li>
+                </ol>
+            </li>
+        </ul>
+        <hr>
+    </div>
+
+    <!-- Product Table -->
+    <section>
+        <h2>Available Products</h2>
+
+        <table id="table" align="center" border="1" cellpadding="10">
+            <tr>
+                <th>ID</th>
+                <th>Product Details</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Purchase</th>
+            </tr>
+
+            <tr>
+                <td>1</td>
+                <td>
+                    <b>Redmi 13C</b><br>
+                </td>
+                <td>₹ 10,000/-</td>
+                <td><img src="phone.jpg" height="100" width="100"></td>
+                <td><button class="buy-btn">Buy Now<a href="https://www.amazon.in/Redmi-Startrail-Storage-MediaTek-Dimensity/dp/B0CNX7BZ7R/ref=lp_20303904031_1_2?pf_rd_p=9e034799-55e2-4ab2-b0d0-eb42f95b2d05&pf_rd_r=1NA790DP48JR49P92FTF&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D" target="_blank"></a></button></td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>
+                    <b>ASUS TUF Gaming A15</b><br>
+                </td>
+                <td>₹ 71,990/-</td>
+                <td><img src="laptop.jpg" height="100" width="100"></td>
+                <td><button class="buy-btn">Buy Now<a href="https://www.amazon.in/ASUS-Upgradeable-Keyboard-Graphite-FA506NCG-HN199W/dp/B0FM3C4L2F/ref=sr_1_4?dib=eyJ2IjoiMSJ9.zMGILbBy5XcEr2dzaGT4wl9RWLM-rzcSWSuIKFBd63hnOiPs_lKiypnx6_Zhds5qi87y_1BA8J3PQ9L63x45m7Ei9NwulFDPsKgRFviHwxtWSDlDIob8qGI3xcL6wDebuGa0OgQpdmKOXsNbTN4deD91zxxUg5mS5ejsM0LBxRcE-VMymUCEHtvnJqXQYMdt--fpPvPMgxV0PO8kxSj9TLZ0e41VXCmpJyUjrxsUnFAB2JuobwtF_i50qY1f3onsfJ5wimixts8WrmF33a6bOZya4xbuVeRYN-YupDmYbKw.Gi-5R4ZLMb_OKAGYlaE5xNorqVe6f9vCIpABmfTgBII&dib_tag=se&qid=1774250722&refinements=p_89%3AAsus&s=computers&sr=1-4&th=1" target="_blank"></a></button></td>
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td>
+                    <b>Xiaomi 4K TV</b><br>
+                </td>
+                <td>₹ 25,999/-</td>
+                <td><img src="tv.jpg" height="100" width="100"></td>
+                <td><button class="buy-btn">Buy Now<a href="http://amazon.in/Xiaomi-Ultra-Smart-Google-L43MB-AIN/dp/B0F6ZLFNVT/ref=sr_1_9?dib=eyJ2IjoiMSJ9.Fe2owRednV7_JPwMOEquNqFYkEFheuxt3JXFmofpOhKq6V-MROlT4I1VRuweSTZpLzFcrrbp-cl_dwEhZk4XUl6FWU0GHgtI_XmovlCB0A1lZPOkx_XU67jq0y_RMjtso5zJ8SogmRMBRNubxhrn5mjmDDROpirouL95UGRM-umhqTUof8SORXW_B_S5TjyoTBuDJrnwH6qT6AUxjEwMEa2AnFYE3W_0tZXrekRZN4w.vZ5mKFDYM2bqDHuSxEuoIbO9rzgsMXqhYogbe12hN8k&dib_tag=se&keywords=redmi%2Btv&qid=1774250808&sr=8-9&th=1" target="_blank"></a></button></td>
+            </tr>
+
+            <tr>
+                <td>4</td>
+                <td>
+                    <b>LG Washing Machine</b><br>
+                </td>
+                <td>₹ 34,990/-</td>
+                <td><img src="washing_machine.jpg" height="100" width="100"></td>
+                <td><button class="buy-btn">Buy Now<a href="https://www.amazon.in/LG-Inverter-Fully-Automatic-FHP1208Z3M-Technology/dp/B0C3LNLFXY?ref_=ast_sto_dp" target="_blank"></a></button></td>
+            </tr>
+
+            <tr>
+                <td>5</td>
+                <td>
+                    <b>LG Refrigerator</b><br>
+                </td>
+                <td>₹ 38,990/-</td>
+                <td><img src="fridge.jpg" height="180" width="100"></td>
+                <td><button class="buy-btn">Buy Now<a href="https://www.amazon.in/LG-Frost-Free-Refrigerator-GL-S382SDSX-Convertible/dp/B0C8NW342B/ref=sr_1_15?dib=eyJ2IjoiMSJ9.YDv0OcAT2C2L1B-sEURoeZIHDnx8nhEuH--wG4RSBOYDL1yIc28oPv1jKE1AeoZ_zs0iC8iEWij_dY9h302cfioPMwmtQjXYOv3eGJbelE9IChxLCru2-8Pcctsyjhkkq3E5u1NOeHSxDhUoEecddo9A5fx-AjcRJ5Pfw1wEmTn-jnnbO8xDOOgle2AikfrNNiRGL-NG60qJ1bVn38gQGrjYg1CygwZkR5NuzGNxDthw4bvUNh5xf-D-GM2SH72WV-FNgbXa6hn8ArcXh7vYxm2x7GlIpOSzPP2QTBQWq1w.atNU3bHh9FDLvn0sXMt82q9nu-w_dkxjapLT7PO80fg&dib_tag=se&qid=1774250911&refinements=p_89%3ALG&s=kitchen&sr=1-15&th=1" target="_blank""></a></button></td>
+            </tr>
+
+        </table>
+    </section>
+
+    <hr>
+</body>
+</html>

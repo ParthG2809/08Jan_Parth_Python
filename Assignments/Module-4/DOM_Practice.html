@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Calculator</title>
+</head>
+<body style="margin:0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #74ebd5, #ACB6E5);">
+
+    <div style="
+        width: 300px;
+        margin: 80px auto;
+        padding: 25px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        text-align: center;
+    ">
+        <h2 style="margin-bottom: 20px;">DOM Calculator</h2>
+
+        <input type="number" id="txt1" placeholder="Number 1"
+            style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc;">
+
+        <input type="number" id="txt2" placeholder="Number 2"
+            style="width: 90%; padding: 10px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;">
+
+        <div>
+            <button onclick="btnSum()" style="padding:10px 15px; margin:5px; border:none; border-radius:8px; background:#4CAF50; color:white; cursor:pointer;">+</button>
+            <button onclick="btnSub()" style="padding:10px 15px; margin:5px; border:none; border-radius:8px; background:#f39c12; color:white; cursor:pointer;">-</button>
+            <button onclick="btnMul()" style="padding:10px 15px; margin:5px; border:none; border-radius:8px; background:#3498db; color:white; cursor:pointer;">×</button>
+            <button onclick="btnDiv()" style="padding:10px 15px; margin:5px; border:none; border-radius:8px; background:#e74c3c; color:white; cursor:pointer;">÷</button>
+        </div>
+
+        <p id="result" style="margin-top:20px; font-weight:bold; color:#333;"></p>
+    </div>
+
+    <script>
+        function getValues(){
+            let n1 = Number(document.getElementById("txt1").value);
+            let n2 = Number(document.getElementById("txt2").value);
+            return [n1, n2];
+        }
+
+        function showResult(text){
+            document.getElementById("result").innerText = text;
+        }
+
+        function btnSum(){
+            let [n1, n2] = getValues();
+            showResult("Sum: " + (n1 + n2));
+        }
+
+        function btnSub(){
+            let [n1, n2] = getValues();
+            showResult("Sub: " + (n1 - n2));
+        }
+
+        function btnMul(){
+            let [n1, n2] = getValues();
+            showResult("Mul: " + (n1 * n2));
+        }
+
+        function btnDiv(){
+            let [n1, n2] = getValues();
+            if(n2 === 0){
+                showResult("Cannot divide by 0");
+            } else {
+                showResult("Div: " + (n1 / n2));
+            }
+        }
+    </script>
+
+</body>
+</html>

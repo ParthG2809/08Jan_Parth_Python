@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid-19 India Tracker | Live Statistics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+        tr {
+            transition: all 0.2s ease;
+        }
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .stat-icon {
+            padding: 10px;
+            border-radius: 12px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 border-b border-white/10 bg-slate-900/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-500/20 p-2 rounded-lg">
+                        <i data-lucide="activity" class="text-blue-400 w-6 h-6"></i>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">Covid-19 <span class="text-blue-400">India</span></span>
+                </div>
+                <div class="text-sm text-slate-400 font-medium">
+                    Last Updated: {{ last_updated|slice:":10" }}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <!-- Summary Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <!-- Total Cases -->
+            <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i data-lucide="users" class="w-16 h-16"></i>
+                </div>
+                <div class="stat-icon bg-blue-500/10 inline-block mb-4">
+                    <i data-lucide="users" class="text-blue-400 w-6 h-6"></i>
+                </div>
+                <h3 class="text-slate-400 text-sm font-medium">Total Confirmed</h3>
+                <p class="text-3xl font-bold mt-1">{{ summary.total|default:"0" }}</p>
+            </div>
+
+            <!-- Discharged -->
+            <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i data-lucide="heart-pulse" class="w-16 h-16"></i>
+                </div>
+                <div class="stat-icon bg-emerald-500/10 inline-block mb-4">
+                    <i data-lucide="heart-pulse" class="text-emerald-400 w-6 h-6"></i>
+                </div>
+                <h3 class="text-slate-400 text-sm font-medium">Discharged</h3>
+                <p class="text-3xl font-bold mt-1 text-emerald-400">{{ summary.discharged|default:"0" }}</p>
+            </div>
+
+            <!-- Deaths -->
+            <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i data-lucide="skull" class="w-16 h-16"></i>
+                </div>
+                <div class="stat-icon bg-rose-500/10 inline-block mb-4">
+                    <i data-lucide="skull" class="text-rose-400 w-6 h-6"></i>
+                </div>
+                <h3 class="text-slate-400 text-sm font-medium">Deaths</h3>
+                <p class="text-3xl font-bold mt-1 text-rose-400">{{ summary.deaths|default:"0" }}</p>
+            </div>
+
+            <!-- Active -->
+            <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i data-lucide="shield-alert" class="w-16 h-16"></i>
+                </div>
+                <div class="stat-icon bg-amber-500/10 inline-block mb-4">
+                    <i data-lucide="shield-alert" class="text-amber-400 w-6 h-6"></i>
+                </div>
+                <h3 class="text-slate-400 text-sm font-medium">Confirmed (Foreign)</h3>
+                <p class="text-3xl font-bold mt-1 text-amber-400">{{ summary.confirmedCasesForeign|default:"0" }}</p>
+            </div>
+        </div>
+
+        <!-- States List -->
+        <div class="mb-6 flex items-center justify-between">
+            <h2 class="text-2xl font-bold">Statewise Statistics</h2>
+            <div class="flex items-center gap-2 text-sm text-slate-400">
+                <i data-lucide="info" class="w-4 h-4"></i>
+                Sorted by location
+            </div>
+        </div>
+
+        <div class="overflow-hidden glass-card rounded-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-slate-800/50 border-b border-white/5">
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-300">Location</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-300">Total Confirmed</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-300">Discharged</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-300">Deaths</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        {% for state in regional %}
+                        <tr class="hover:bg-white/5 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-blue-400"></i>
+                                    </div>
+                                    <span class="font-medium text-slate-200">{{ state.loc }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="user-plus" class="w-4 h-4 text-slate-400"></i>
+                                    <span class="text-slate-300">{{ state.totalConfirmed }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="heart" class="w-4 h-4 text-emerald-500"></i>
+                                    <span class="text-emerald-400 font-medium">{{ state.discharged }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="activity" class="w-4 h-4 text-rose-500"></i>
+                                    <span class="text-rose-400 font-medium">{{ state.deaths }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

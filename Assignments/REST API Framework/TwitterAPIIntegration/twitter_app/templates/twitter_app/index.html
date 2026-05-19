@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Fetcher | Premium API Integration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .tweet-card {
+            transition: all 0.3s ease;
+        }
+        
+        .tweet-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.15);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+
+        /* Subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(56, 189, 248, 0.5);
+        }
+    </style>
+</head>
+<body class="text-slate-200 antialiased font-sans flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+
+    <main class="w-full max-w-3xl">
+        <!-- Header Section -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center p-3 bg-brand-500/10 rounded-full mb-4 ring-1 ring-brand-500/30">
+                <svg class="w-8 h-8 text-brand-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">Twitter <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-indigo-400">Fetcher</span></h1>
+            <p class="text-slate-400 text-lg max-w-xl mx-auto">Enter any Twitter handle to instantly retrieve their latest tweets using the official Twitter API v2.</p>
+        </div>
+
+        <!-- Search Form -->
+        <div class="glass-panel rounded-2xl p-6 mb-8 relative z-10">
+            <form method="POST" action="{% url 'index' %}" class="relative">
+                {% csrf_token %}
+                <div class="relative flex items-center">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <span class="text-slate-400 font-medium text-lg">@</span>
+                    </div>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username" 
+                        value="{{ username }}"
+                        placeholder="elonmusk, TwitterDev..." 
+                        class="block w-full pl-10 pr-32 py-4 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 transition-all text-lg shadow-inner outline-none"
+                        required
+                        autocomplete="off"
+                    >
+                    <button 
+                        type="submit" 
+                        class="absolute right-2 top-2 bottom-2 px-6 bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-400 hover:to-brand-500 text-white font-medium rounded-lg transition-all shadow-lg hover:shadow-brand-500/30 flex items-center gap-2"
+                    >
+                        <span>Fetch</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Error State -->
+        {% if error_message %}
+        <div class="glass-panel border-red-500/30 bg-red-500/5 rounded-xl p-5 mb-8 flex items-start gap-4 animate-fade-in">
+            <div class="p-2 bg-red-500/20 rounded-full text-red-400 shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <div>
+                <h3 class="text-red-400 font-semibold text-lg">Error Occurred</h3>
+                <p class="text-red-300/80 mt-1">{{ error_message }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Results Section -->
+        {% if tweets %}
+        <div class="space-y-4">
+            <h2 class="text-xl font-semibold text-slate-300 mb-6 flex items-center gap-2">
+                Latest Tweets from @{{ tweets.0.user.username }}
+            </h2>
+            
+            {% for tweet in tweets %}
+            <div class="glass-panel tweet-card rounded-2xl p-6 relative overflow-hidden group">
+                <!-- User Info -->
+                <div class="flex items-center gap-4 mb-4">
+                    {% if tweet.user.profile_image_url %}
+                    <img src="{{ tweet.user.profile_image_url }}" alt="{{ tweet.user.name }}" class="w-12 h-12 rounded-full border-2 border-slate-700/50 shadow-sm">
+                    {% else %}
+                    <div class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-xl font-bold border-2 border-slate-600">
+                        {{ tweet.user.name|slice:":1" }}
+                    </div>
+                    {% endif %}
+                    
+                    <div>
+                        <h3 class="font-bold text-white text-base leading-tight">{{ tweet.user.name }}</h3>
+                        <p class="text-slate-400 text-sm">@{{ tweet.user.username }}</p>
+                    </div>
+                    
+                    <!-- Date (Desktop) -->
+                    <div class="ml-auto text-slate-500 text-xs font-medium">
+                        {{ tweet.created_at|slice:":10" }}
+                    </div>
+                </div>
+
+                <!-- Tweet Text -->
+                <p class="text-slate-200 text-lg leading-relaxed mb-6 whitespace-pre-wrap">{{ tweet.text }}</p>
+
+                <!-- Metrics -->
+                <div class="flex items-center gap-6 pt-4 border-t border-slate-700/50 text-slate-400">
+                    <div class="flex items-center gap-2 hover:text-brand-400 transition-colors cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        <span class="text-sm font-medium">{{ tweet.metrics.reply_count|default:"0" }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 hover:text-green-400 transition-colors cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                        <span class="text-sm font-medium">{{ tweet.metrics.retweet_count|default:"0" }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 hover:text-pink-500 transition-colors cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        <span class="text-sm font-medium">{{ tweet.metrics.like_count|default:"0" }}</span>
+                    </div>
+                    <div class="flex items-center gap-2 hover:text-indigo-400 transition-colors cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <span class="text-sm font-medium">{{ tweet.metrics.impression_count|default:"0" }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% elif request.method == 'POST' and not error_message %}
+            <!-- This handles the edge case where no tweets but no error -->
+        {% else %}
+            <!-- Empty State / Introduction -->
+            <div class="glass-panel rounded-2xl p-10 text-center flex flex-col items-center justify-center border border-dashed border-slate-600/50 mt-12 opacity-70">
+                <svg class="w-16 h-16 text-slate-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <h3 class="text-xl font-medium text-slate-300 mb-2">Awaiting Search</h3>
+                <p class="text-slate-500 max-w-sm">Enter a Twitter handle above to retrieve their latest 5 tweets directly from the Twitter API.</p>
+            </div>
+        {% endif %}
+
+        <!-- Footer -->
+        <footer class="mt-16 pb-8 text-center text-slate-500 text-sm">
+            <p>Powered by Django, Tailwind CSS, and the Twitter API v2</p>
+        </footer>
+    </main>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Reddit Clone{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        orange: {
+                            500: '#FF4500',
+                            600: '#E03D00',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <a href="{% url 'feed:home' %}" class="flex items-center space-x-2 group">
+                        <div class="relative flex items-center justify-center">
+                            <svg class="h-9 w-9 transition-transform group-hover:scale-110" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M32 16c0-8.837-7.163-16-16-16S0 7.163 0 16s7.163 16 16 16 16-7.163 16-16z" fill="#FF4500"/>
+                                <path d="M26.67 15.357c-.152.004-.302-.014-.447-.054-1.378-.392-2.835-.583-4.223-.583-1.388 0-2.845.191-4.223.583-.145.04-.295.058-.447.054-1.127-.03-2.03-.948-2.03-2.079 0-.488.175-.934.464-1.282-.128-.352-.196-.726-.196-1.114 0-1.808 1.621-3.279 3.614-3.279.351 0 .688.046 1.008.131.543-.722 1.393-1.189 2.361-1.189.968 0 1.818.467 2.361 1.189.32-.085.657-.131 1.008-.131 1.993 0 3.614 1.471 3.614 3.279 0 .388-.068.762-.196 1.114.289.348.464.794.464 1.282 0 1.131-.903 2.049-2.03 2.079z" fill="#FFF"/>
+                            </svg>
+                        </div>
+                        <span class="text-2xl font-black tracking-tighter hidden sm:block dark:text-white">reddit</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </button>
+
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'posts:create' %}" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group relative" title="Create Post">
+                            <svg class="w-6 h-6 text-gray-700 dark:text-gray-300 group-hover:text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </a>
+                    {% endif %}
+                    
+                    {% if user.is_authenticated %}
+                        <span class="text-sm font-medium">{{ user.username }}</span>
+                        <a href="{% url 'accounts:logout' %}" class="text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Logout</a>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Log In</a>
+                        <a href="{% url 'accounts:signup' %}" class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold rounded-full transition-all duration-200">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="max-w-md mx-auto mt-4 px-4">
+        {% for message in messages %}
+        <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-800{% elif message.tags == 'error' %}bg-red-100 text-red-800{% else %}bg-blue-100 text-blue-800{% endif %} mb-2 shadow-sm border border-opacity-20 flex justify-between items-center animate-fade-in">
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        var themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+
+        // AJAX Actions
+        async function sendAction(url, data = {}) {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
+            });
+            return await response.json();
+        }
+
+        async function vote(postId, value) {
+            const data = await sendAction(`/posts/${postId}/vote/`, { 'value': value });
+            if (data.score !== undefined) {
+                // Update UI score (you'd need IDs on score elements)
+                location.reload(); // Simple way for now, or update DOM
+            }
+        }
+
+        async function savePost(postId) {
+            const data = await sendAction(`/posts/${postId}/action/save/`);
+            if (data.saved !== undefined) {
+                const btn = document.getElementById(`save-btn-${postId}`);
+                btn.classList.toggle('text-orange-500', data.saved);
+            }
+        }
+
+        function sharePost(postId) {
+            const url = window.location.origin + `/posts/${postId}/`;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+
+        async function reportPost(postId) {
+            const reason = prompt("Reason for reporting (spam, harassment, hate, misinformation, other):");
+            if (reason) {
+                const data = await sendAction(`/posts/${postId}/action/report/`, { 'reason': reason });
+                if (data.reported) alert('Post reported. Thank you.');
+            }
+        }
+
+        async function votePoll(optionId) {
+            const data = await sendAction(`/posts/poll/vote/${optionId}/`);
+            if (data.votes !== undefined) {
+                const span = document.getElementById(`poll-votes-${optionId}`);
+                span.innerText = `${data.votes} votes`;
+                span.classList.remove('opacity-0');
+            }
+        }
+    </script>
+</body>
+</html>

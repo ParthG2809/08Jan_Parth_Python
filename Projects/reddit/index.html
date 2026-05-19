@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit - Dive into anything</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Phosphor Icons for crisp, modern icons similar to Reddit's new design -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Inter Font for a clean aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="icon-btn menu-toggle" aria-label="Toggle Menu">
+                <i class="ph ph-list"></i>
+            </button>
+            <a href="#" class="logo-link">
+                <div class="brand-logo">
+                    <div class="reddit-icon-bg">
+                        <i class="ph-fill ph-reddit-logo"></i>
+                    </div>
+                </div>
+                <span class="brand-name">reddit</span>
+            </a>
+        </div>
+
+        <div class="nav-center">
+            <div class="search-bar">
+                <i class="ph ph-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Search Reddit">
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <button class="action-btn theme-toggle" title="Toggle Theme">
+                <i class="ph ph-moon"></i>
+            </button>
+            <button class="icon-btn hide-mobile">
+                <i class="ph ph-chat-centered-dots"></i>
+            </button>
+            <button class="action-btn create-post">
+                <i class="ph ph-plus"></i> Create
+            </button>
+            <button class="icon-btn hide-mobile">
+                <i class="ph ph-bell"></i>
+            </button>
+            <div class="user-dropdown">
+                <img src="https://i.pravatar.cc/150?u=redditclone" alt="User Avatar" class="avatar">
+                <div class="online-indicator"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Layout Container -->
+    <div class="layout-container">
+        
+        <!-- Left Sidebar -->
+        <aside class="sidebar-left" id="sidebar">
+            <div class="sidebar-section">
+                <a href="#" class="sidebar-item active">
+                    <i class="ph-fill ph-house"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="ph ph-arrow-up-right"></i>
+                    <span>Popular</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="ph ph-globe-hemisphere-west"></i>
+                    <span>All</span>
+                </a>
+            </div>
+
+            <hr class="divider">
+
+            <div class="sidebar-section">
+                <h3 class="section-heading">Recent</h3>
+                <a href="#" class="sidebar-item">
+                    <div class="community-icon r-webdev"></div>
+                    <span>r/webdev</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <div class="community-icon r-gaming"></div>
+                    <span>r/gaming</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <div class="community-icon r-design"></div>
+                    <span>r/UI_Design</span>
+                </a>
+            </div>
+
+            <hr class="divider">
+
+            <div class="sidebar-section">
+                <h3 class="section-heading">Topics</h3>
+                <a href="#" class="sidebar-item">
+                    <i class="ph ph-game-controller"></i>
+                    <span>Gaming</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="ph ph-baseball"></i>
+                    <span>Sports</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="ph ph-chart-line-up"></i>
+                    <span>Business</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="ph ph-currency-btc"></i>
+                    <span>Crypto</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="ph ph-television"></i>
+                    <span>Television</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="ph ph-star"></i>
+                    <span>Celebrity</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Feed -->
+        <main class="feed-container">
+            
+            <!-- Create Post Bar (Minimal) -->
+            <div class="create-post-bar card">
+                <img src="https://i.pravatar.cc/150?u=redditclone" alt="User Avatar" class="avatar">
+                <input type="text" placeholder="Create Post">
+                <button class="icon-btn"><i class="ph ph-image"></i></button>
+                <button class="icon-btn"><i class="ph ph-link"></i></button>
+            </div>
+
+            <div class="feed-sort">
+                <button class="sort-btn active">Best</button>
+                <button class="sort-btn">Hot</button>
+                <button class="sort-btn">New</button>
+                <button class="sort-btn">Top</button>
+                <button class="sort-btn sort-right"><i class="ph ph-list-dashes"></i></button>
+            </div>
+
+            <!-- Post Card 1 -->
+            <article class="post-card card">
+                <div class="post-header">
+                    <div class="community-icon r-gaming"></div>
+                    <div class="post-meta">
+                        <a href="#" class="community-name">r/gaming</a>
+                        <span class="dot-separator">•</span>
+                        <span class="time-posted">2 hr. ago</span>
+                    </div>
+                </div>
+                <div class="post-body">
+                    <h2 class="post-title">The attention to detail in the new Cyberpunk update is incredible</h2>
+                    <div class="post-content-image">
+                        <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Cyberpunk aesthetic">
+                    </div>
+                </div>
+                <div class="post-footer">
+                    <div class="vote-widget">
+                        <button class="vote-btn upvote" aria-label="Upvote"><i class="ph ph-arrow-fat-up"></i></button>
+                        <span class="vote-count">24.5k</span>
+                        <button class="vote-btn downvote" aria-label="Downvote"><i class="ph ph-arrow-fat-down"></i></button>
+                    </div>
+                    <button class="action-pill"><i class="ph ph-chat-centered"></i> 1.2k Comments</button>
+                    <button class="action-pill"><i class="ph ph-share-network"></i> Share</button>
+                </div>
+            </article>
+
+            <!-- Post Card 2 -->
+            <article class="post-card card">
+                <div class="post-header">
+                    <div class="community-icon r-webdev"></div>
+                    <div class="post-meta">
+                        <a href="#" class="community-name">r/webdev</a>
+                        <span class="dot-separator">•</span>
+                        <span class="time-posted">5 hr. ago</span>
+                    </div>
+                </div>
+                <div class="post-body">
+                    <h2 class="post-title">What's the best CSS feature added in the last 2 years?</h2>
+                    <div class="post-content-text">
+                        <p>I find myself using <code>:has()</code> and CSS nesting on a daily basis now. It completely changed how I write CSS without needing SASS. What are your favorites?</p>
+                    </div>
+                </div>
+                <div class="post-footer">
+                    <div class="vote-widget">
+                        <button class="vote-btn upvote" aria-label="Upvote"><i class="ph ph-arrow-fat-up"></i></button>
+                        <span class="vote-count">8,341</span>
+                        <button class="vote-btn downvote" aria-label="Downvote"><i class="ph ph-arrow-fat-down"></i></button>
+                    </div>
+                    <button class="action-pill"><i class="ph ph-chat-centered"></i> 452 Comments</button>
+                    <button class="action-pill"><i class="ph ph-share-network"></i> Share</button>
+                </div>
+            </article>
+
+            <!-- Post Card 3 -->
+            <article class="post-card card">
+                <div class="post-header">
+                    <div class="community-icon r-design"></div>
+                    <div class="post-meta">
+                        <a href="#" class="community-name">r/UI_Design</a>
+                        <span class="dot-separator">•</span>
+                        <span class="time-posted">10 hr. ago</span>
+                    </div>
+                </div>
+                <div class="post-body">
+                    <h2 class="post-title">Redesigned my portfolio to look more modern. Working with dark themes is hard but rewarding.</h2>
+                    <div class="post-content-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Code on screen">
+                    </div>
+                </div>
+                <div class="post-footer">
+                    <div class="vote-widget">
+                        <button class="vote-btn upvote" aria-label="Upvote"><i class="ph ph-arrow-fat-up"></i></button>
+                        <span class="vote-count">3.2k</span>
+                        <button class="vote-btn downvote" aria-label="Downvote"><i class="ph ph-arrow-fat-down"></i></button>
+                    </div>
+                    <button class="action-pill"><i class="ph ph-chat-centered"></i> 118 Comments</button>
+                    <button class="action-pill"><i class="ph ph-share-network"></i> Share</button>
+                </div>
+            </article>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="sidebar-right">
+            <div class="widget card">
+                <h3 class="widget-header">Popular Communities</h3>
+                <div class="community-list">
+                    <div class="community-list-item">
+                        <div class="community-icon r-askreddit"></div>
+                        <div class="community-details">
+                            <span class="c-name">r/AskReddit</span>
+                            <span class="c-members">45M members</span>
+                        </div>
+                        <button class="join-btn">Join</button>
+                    </div>
+                    <div class="community-list-item">
+                        <div class="community-icon r-funny"></div>
+                        <div class="community-details">
+                            <span class="c-name">r/funny</span>
+                            <span class="c-members">57M members</span>
+                        </div>
+                        <button class="join-btn">Join</button>
+                    </div>
+                    <div class="community-list-item">
+                        <div class="community-icon r-science"></div>
+                        <div class="community-details">
+                            <span class="c-name">r/science</span>
+                            <span class="c-members">32M members</span>
+                        </div>
+                        <button class="join-btn">Join</button>
+                    </div>
+                    <div class="community-list-item">
+                        <div class="community-icon r-technology"></div>
+                        <div class="community-details">
+                            <span class="c-name">r/technology</span>
+                            <span class="c-members">15M members</span>
+                        </div>
+                        <button class="join-btn">Join</button>
+                    </div>
+                </div>
+                <button class="see-more-btn">See more</button>
+            </div>
+
+            <div class="widget card sticky-widget">
+                <div class="premium-ad">
+                    <div class="ad-content">
+                        <i class="ph-fill ph-shield-check premium-icon"></i>
+                        <div class="ad-text">
+                            <h4>Reddit Premium</h4>
+                            <p>The best Reddit experience, with monthly Coins</p>
+                        </div>
+                    </div>
+                    <button class="action-btn premium-btn">Try Now</button>
+                </div>
+            </div>
+            
+            <div class="widget footer-links">
+                <div class="footer-grid">
+                    <a href="#">User Agreement</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Content Policy</a>
+                    <a href="#">Moderator Code</a>
+                </div>
+                <p class="copyright">Reddit Inc © 2026. All rights reserved.</p>
+            </div>
+        </aside>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

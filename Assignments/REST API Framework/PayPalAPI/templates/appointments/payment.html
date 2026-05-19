@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+    <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800">Secure Payment</h1>
+        <p class="text-gray-600 mt-2">Complete your booking with PayPal.</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden mb-6">
+        <div class="p-6 border-b border-gray-100">
+            <h3 class="font-bold text-gray-800 mb-4">Order Summary</h3>
+            <div class="flex justify-between mb-2">
+                <span class="text-gray-600">Doctor</span>
+                <span class="font-medium text-gray-800">Dr. {{ appointment.doctor.name }}</span>
+            </div>
+            <div class="flex justify-between mb-2">
+                <span class="text-gray-600">Date</span>
+                <span class="font-medium text-gray-800">{{ appointment.date }}</span>
+            </div>
+            <div class="flex justify-between mb-2">
+                <span class="text-gray-600">Time</span>
+                <span class="font-medium text-gray-800">{{ appointment.time }}</span>
+            </div>
+        </div>
+        <div class="bg-blue-50 p-6 flex justify-between items-center">
+            <span class="font-bold text-gray-800">Total to Pay</span>
+            <span class="font-bold text-2xl text-blue-600">${{ appointment.doctor.consultation_fee }}</span>
+        </div>
+    </div>
+
+    <div id="paypal-button-container" class="mt-4"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency=USD"></script>
+<script>
+    // Get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '{{ appointment.doctor.consultation_fee }}'
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Send transaction data to the server
+                fetch("{% url 'appointments:payment_success' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID,
+                        appointmentID: '{{ appointment.id }}'
+                    })
+                }).then(response => response.json())
+                .then(result => {
+                    if (result.status === 'Success') {
+                        window.location.href = "{% url 'appointments:payment_success' %}";
+                    } else {
+                        alert('Transaction failed: ' + result.message);
+                    }
+                });
+            });
+        },
+        onCancel: function(data) {
+            window.location.href = "{% url 'appointments:payment_cancel' %}";
+        }
+    }).render('#paypal-button-container');
+</script>
+{% endblock %}

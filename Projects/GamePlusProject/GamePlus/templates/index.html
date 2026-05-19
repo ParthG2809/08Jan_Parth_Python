@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamePlus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- CUSTOM SIDEBAR -->
+    <div id="customSidebar" class="custom-sidebar">
+        <div class="sidebar-header w-100 mb-2 px-4 pt-4 pb-0"
+            style="flex-direction: column; align-items: stretch; justify-content: flex-start;">
+            <div id="sidebarDefaultHeader" class="d-flex justify-content-between align-items-center w-100">
+                <i class="bi bi-search text-white hover-warning" id="sidebarSearchBtn"
+                    style="font-size: 22px; cursor: pointer;"></i>
+                <i class="bi bi-x sidebar-close" id="closeSidebar"></i>
+            </div>
+
+            <div id="sidebarSearchState" class="d-none justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center flex-grow-1 border-bottom pb-1 me-3"
+                    style="border-color: #ffb800 !important;">
+                    <i class="bi bi-search" style="font-size: 20px; color: #ffb800;"></i>
+                    <input type="text" id="sidebarSearchInput"
+                        class="form-control bg-transparent border-0 shadow-none px-2 py-0" placeholder="Search..."
+                        style="color: #fff !important; box-shadow: none !important; outline: none; caret-color: #ffb800;">
+                    <i class="bi bi-x" id="clearSearchBtn"
+                        style="font-size: 28px; cursor: pointer; color: #ffb800; line-height: 1;"></i>
+                </div>
+                <i class="bi bi-x sidebar-close" id="closeSidebarInner"
+                    style="font-size: 32px; cursor: pointer; color: #fff;"></i>
+            </div>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-cats">
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="/category">MOVIES</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Movie Features</a></li>
+                        <li><a href="#">Movie News</a></li>
+                        <li><a href="#">Movie Reviews</a></li>
+                        <li><a href="#">Movie Lists</a></li>
+                        <li><a href="#">Movie Trailers</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">TV</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">TV Features</a></li>
+                        <li><a href="#">TV News</a></li>
+                        <li><a href="#">TV Reviews</a></li>
+                        <li><a href="#">Network TV</a></li>
+                        <li><a href="#">TV Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">REALITY TV</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Reality TV Features</a></li>
+                        <li><a href="#">Reality TV News</a></li>
+                        <li><a href="#">Reality TV Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">GAMING</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Game Features</a></li>
+                        <li><a href="#">Game News</a></li>
+                        <li><a href="#">Game Guides</a></li>
+                        <li><a href="#">Game Reviews</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">COMICS</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Comic News</a></li>
+                        <li><a href="#">Comic Reviews</a></li>
+                        <li><a href="#">Comic Features</a></li>
+                        <li><a href="#">Comic Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">ANIME</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Anime News</a></li>
+                        <li><a href="#">Anime Features</a></li>
+                        <li><a href="#">Anime Reviews</a></li>
+                        <li><a href="#">Anime Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">MUSIC</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Music News</a></li>
+                        <li><a href="#">Music Features</a></li>
+                        <li><a href="#">Music Reviews</a></li>
+                        <li><a href="#">Music Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">NETWORK TV SCHEDULE</a>
+                    </div>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">VIDEOS</a>
+                    </div>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">MORE</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Exclusives</a></li>
+                        <li><a href="#">SR Database</a></li>
+                        <li><a href="#">Interviews</a></li>
+                        <li><a href="#">Podcasts</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer-links mt-4">
+                <a href="#"><i class="bi bi-person me-2" style="font-size: 20px;"></i> <b>Sign In</b></a>
+                <a href="#"><i class="bi bi-envelope me-2" style="font-size: 20px;"></i> <b>Newsletter</b></a>
+            </div>
+
+            <div class="sidebar-socials mt-4 mb-3">
+                <a href="#"><i class="bi bi-youtube"></i></a>
+                <a href="#"><i class="bi bi-facebook"></i></a>
+                <a href="#"><i class="bi bi-instagram"></i></a>
+                <a href="#"><i class="bi bi-twitter-x"></i></a>
+                <a href="#"><i class="bi bi-tiktok"></i></a>
+                <a href="#" style="border:none;"><i class="bi bi-plus text-warning bg-transparent"
+                        style="font-size:24px;"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIDEBAR OVERLAY -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <nav class="navbar wesper-navbar pt-3 pb-0">
+        <div class="container-fluid nav-footer-center flex-column align-items-stretch">
+
+            <!-- TOP ROW -->
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <!-- LOGO -->
+                <a class="navbar-brand logo" href="/">
+                    game<span>plus</span>
+                </a>
+
+                <!-- RIGHT ICONS -->
+                <div class="nav-icons d-flex align-items-center">
+                    <i class="bi bi-moon" id="themeToggle" style="cursor: pointer;"></i>
+                    <i class="bi bi-bag"></i>
+                    <i class="bi bi-list"></i>
+                </div>
+            </div>
+
+            <!-- BOTTOM ROW -->
+            <div class="d-none d-lg-flex w-100 mt-2">
+                <ul class="navbar-nav flex-row align-items-center justify-content-between w-100 pb-2">
+                    <li class="nav-item">
+                        <a class="nav-link active text-warning px-0 mx-0" href="#">Trending</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Spring Movie Preview</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Spring TV Preview</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Exclusives</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Best on Streaming</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">SR Database</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Network TV Schedule</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="wesper-wrapper">
+        <div class="container-fluid mt-4">
+            <div class="row">
+
+                <!-- LEFT BIG HERO -->
+                <div class="col-md-8">
+                    <div class="hero-card big-hero">
+
+                        <img src="https://picsum.photos/800/500">
+
+                        <div class="hero-overlay">
+                            <span class="badge bg-danger mb-2">BUSINESS</span>
+                            <h2><a href="/article" class="text-reset text-decoration-none stretched-link">Beyond Good & Evil 2 Has Been in Development Longer Than Literally Any Game, Ever</a></h2>
+                            <small>BY KELLY • JULY 29, 2022</small>
+                        </div>
+
+                        <div class="rating" style="--value: 87%;"><span>8.7</span></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE -->
+                <div class="col-md-4 d-flex flex-column">
+
+                    <!-- TOP CARD -->
+                    <div class="hero-card small-hero mb-3">
+                        <img src="https://picsum.photos/400/250">
+
+                        <div class="hero-overlay">
+                            <span class="badge bg-danger mb-1">ACTIVE</span>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Sony’s New Studio Is Working On A Beloved Franchise</a></h6>
+                            <small>BY KELLY • JULY 29, 2022</small>
+                        </div>
+
+                        <div class="rating small" style="--value: 60%;"><span>6.0</span></div>
+                    </div>
+
+                    <!-- BOTTOM CARD -->
+                    <div class="hero-card small-hero">
+                        <img src="https://picsum.photos/401/250">
+
+                        <div class="hero-overlay">
+                            <span class="badge bg-danger mb-1">SPORTS</span>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">This Stray no-damage run is perfect viewing</a></h6>
+                            <small>BY KELLY • JULY 29, 2022</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container-fluid trending-section mt-4">
+            <div class="container-fluid">
+
+                <div class="trending-scroll d-flex">
+
+                    <!-- Item -->
+                    <div class="trending-item d-flex align-items-center position-relative">
+                        <img src="https://picsum.photos/80" class="rounded-circle me-3">
+                        <div>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Overwatch 2 Survey Asking About $45 Skins...</a></h6>
+                            <small>JULY 29, 2022</small>
+                        </div>
+                    </div>
+
+                    <!-- Repeat -->
+                    <div class="trending-item d-flex align-items-center position-relative">
+                        <img src="https://picsum.photos/81" class="rounded-circle me-3">
+                        <div>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Ubisoft Employee Claims Developers Have Left...</a></h6>
+                            <small>JULY 29, 2022</small>
+                        </div>
+                    </div>
+
+                    <div class="trending-item d-flex align-items-center position-relative">
+                        <img src="https://picsum.photos/82" class="rounded-circle me-3">
+                        <div>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Mario Strikers Battle League Football...</a></h6>
+                            <small>JULY 26, 2022</small>
+                        </div>
+                    </div>
+
+                    <div class="trending-item d-flex align-items-center position-relative">
+                        <img src="https://picsum.photos/83" class="rounded-circle me-3">
+                        <div>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Final Fantasy VII Remake Intergrade...</a></h6>
+                            <small>JULY 26, 2022</small>
+                        </div>
+                    </div>
+
+                    <div class="trending-item d-flex align-items-center position-relative">
+                        <img src="https://picsum.photos/84" class="rounded-circle me-3">
+                        <div>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Xbox Boss Phil Spencer Says Meta Is Like...</a></h6>
+                            <small>JULY 26, 2022</small>
+                        </div>
+                    </div>
+
+                    <div class="trending-item d-flex align-items-center position-relative">
+                        <img src="https://picsum.photos/85" class="rounded-circle me-3">
+                        <div>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Blizzard Albany gets union vote greenlight...</a></h6>
+                            <small>JULY 26, 2022</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+
+            <!-- TITLE -->
+            <h4 class="section-title">TV & MOVIE REVIEWS</h4>
+
+            <!-- CARDS -->
+            <div class="row divider-row">
+
+                <!-- CARD 1 -->
+                <div class="col-md-4">
+                    <div class="game-card">
+                        <img src="https://picsum.photos/400/300">
+
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-2">BUSINESS</span>
+                            <h5><a href="/article" class="text-reset text-decoration-none stretched-link">Xbox boss Phil Spencer says the metaverse is like ‘a poorly built videogame’</a></h5>
+                            <small>BY KELLY • JULY 26, 2022</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="col-md-4">
+                    <div class="game-card">
+                        <img src="https://picsum.photos/401/300">
+
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-2">TECH</span>
+                            <h5><a href="/article" class="text-reset text-decoration-none stretched-link">Blizzard Albany gets union vote greenlight</a></h5>
+                            <small>BY KELLY • JULY 26, 2022</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="col-md-4">
+                    <div class="game-card">
+                        <img src="https://picsum.photos/402/300">
+
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-2">BUSINESS</span>
+                            <h5><a href="/article" class="text-reset text-decoration-none stretched-link">New World losing players after launch</a></h5>
+                            <small>BY KELLY • JULY 26, 2022</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container-fluid mt-4">
+            <div class="row g-4 upcoming-row divider-row">
+
+                <!-- CARD -->
+                <div class="col-md-2 col-6">
+                    <div class="wesper-card position-relative">
+
+                        <div class="image-box">
+                            <img src="https://picsum.photos/200/200">
+                            <span class="badge bg-danger category">ACTIVE</span>
+                        </div>
+
+                        <h6 class="mt-2"><a href="/article" class="text-reset text-decoration-none stretched-link">
+                            Nintendo Reveals Multiple Games & Updates For 2022 Holiday Season
+                        </a></h6>
+
+                        <small class="text-muted">JULY 26, 2022</small>
+
+                    </div>
+                </div>
+
+                <!-- Repeat -->
+                <div class="col-md-2 col-6">
+                    <div class="wesper-card position-relative">
+                        <div class="image-box">
+                            <img src="https://picsum.photos/201/200">
+                            <span class="badge bg-danger category">BUSINESS</span>
+                        </div>
+                        <h6 class="mt-2"><a href="/article" class="text-reset text-decoration-none stretched-link">A New Hero Claims the Power of K’un-Lun</a></h6>
+                        <small class="text-muted">JULY 24, 2022</small>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-6">
+                    <div class="wesper-card position-relative">
+                        <div class="image-box">
+                            <img src="https://picsum.photos/202/200">
+                            <span class="badge bg-danger category">HEALTH</span>
+                        </div>
+                        <h6 class="mt-2"><a href="/article" class="text-reset text-decoration-none stretched-link">What’s the average Skill Division in Vanguard?</a></h6>
+                        <small class="text-muted">JULY 24, 2022</small>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-6">
+                    <div class="wesper-card position-relative">
+                        <div class="image-box">
+                            <img src="https://picsum.photos/203/200">
+                            <span class="badge bg-danger category">ESPORTS</span>
+                        </div>
+                        <h6 class="mt-2"><a href="/article" class="text-reset text-decoration-none stretched-link">Valorant Champions Tour Finals Preview</a></h6>
+                        <small class="text-muted">JULY 22, 2022</small>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-6">
+                    <div class="wesper-card position-relative">
+                        <div class="image-box">
+                            <img src="https://picsum.photos/204/200">
+                            <span class="badge bg-danger category">GAMING</span>
+                        </div>
+                        <h6 class="mt-2"><a href="/article" class="text-reset text-decoration-none stretched-link">The Best Indie Games Released This Month</a></h6>
+                        <small class="text-muted">JULY 21, 2022</small>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-6">
+                    <div class="wesper-card position-relative">
+                        <div class="image-box">
+                            <img src="https://picsum.photos/205/200">
+                            <span class="badge bg-danger category">NEWS</span>
+                        </div>
+                        <h6 class="mt-2"><a href="/article" class="text-reset text-decoration-none stretched-link">PlayStation 5 Restock Expected Soon</a></h6>
+                        <small class="text-muted">JULY 20, 2022</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+
+            <!-- TITLE -->
+            <h4 class="section-title">EXCLUSIVE STORIES</h4>
+
+            <div class="row">
+
+                <!-- LEFT BIG CARD -->
+                <div class="col-md-6">
+                    <div class="explore-card big-card">
+                        <img src="https://picsum.photos/600/500">
+
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-2">SPORTS</span>
+                            <h3><a href="/article" class="text-reset text-decoration-none stretched-link">Spider-Man Meets Cable As Marvel's New Spider-Smasher</a></h3>
+                            <small>BY KELLY • JULY 24, 2022</small>
+                        </div>
+
+                        <!-- Rating circle -->
+                        <div class="rating" style="--value: 73%;"><span>7.3</span></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT GRID -->
+                <div class="col-md-6">
+                    <div class="row g-3 divider-row">
+
+                        <div class="col-6">
+                            <div class="explore-card small-card">
+                                <img src="https://picsum.photos/301/250">
+                                <div class="overlay">
+                                    <span class="badge bg-danger mb-1">INSPIRATION</span>
+                                    <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Apex Legends Season 11 Start Date</a></h6>
+                                    <small>BY KELLY • JULY 24, 2022</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="explore-card small-card">
+                                <img src="https://picsum.photos/302/250">
+                                <div class="overlay">
+                                    <span class="badge bg-danger mb-1">ACTIVE</span>
+                                    <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Battlefield 2042 First Season</a></h6>
+                                    <small>BY KELLY • JULY 24, 2022</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="explore-card small-card">
+                                <img src="https://picsum.photos/303/250">
+                                <div class="overlay">
+                                    <span class="badge bg-danger mb-1">HEALTH</span>
+                                    <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Assassin’s Creed Infinity Update</a></h6>
+                                    <small>BY KELLY • JULY 24, 2022</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="explore-card small-card">
+                                <img src="https://picsum.photos/304/250">
+                                <div class="overlay">
+                                    <span class="badge bg-danger mb-1">ACTIVE</span>
+                                    <h6><a href="/article" class="text-reset text-decoration-none stretched-link">GTA Trilogy New Details</a></h6>
+                                    <small>BY KELLY • JULY 24, 2022</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+
+            <div class="row g-4">
+
+                <!-- COLUMN 1 -->
+                <div class="col-md-6">
+
+                    <!-- ITEM -->
+                    <div class="news-item d-flex mb-3 position-relative">
+                        <img src="https://picsum.photos/100/80" class="me-3">
+
+                        <div>
+                            <span class="badge bg-danger mb-1">SPORTS</span>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">A lot of Battlefield 2042 beta players want changes</a></h6>
+                            <small>JULY 24, 2022</small>
+                        </div>
+                    </div>
+
+                    <div class="news-item d-flex mb-3 position-relative">
+                        <img src="https://picsum.photos/101/80" class="me-3">
+                        <div>
+                            <span class="badge bg-danger mb-1">SPORTS</span>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">A Scaredy Cat Guide to Surviving Halloween</a></h6>
+                            <small>JULY 24, 2022</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLUMN 2 -->
+                <div class="col-md-6">
+
+                    <div class="news-item d-flex mb-3 position-relative">
+                        <img src="https://picsum.photos/102/80" class="me-3">
+                        <div>
+                            <span class="badge bg-danger mb-1">HEALTH</span>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Shadow Warrior 3 Official Delay Announcement</a></h6>
+                            <small>JULY 24, 2022</small>
+                        </div>
+                    </div>
+
+                    <div class="news-item d-flex mb-3 position-relative">
+                        <img src="https://picsum.photos/103/80" class="me-3">
+                        <div>
+                            <span class="badge bg-danger mb-1">TECH</span>
+                            <h6><a href="/article" class="text-reset text-decoration-none stretched-link">Classic GTA Game Seemingly Delisted</a></h6>
+                            <small>JULY 24, 2022</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container-fluid mt-5">
+
+            <div class="row">
+
+                <!-- LEFT: BLOG LIST -->
+                <div class="col-md-8">
+                    <!-- FEED FILTER TABS -->
+                    <ul class="nav nav-tabs feed-filter-tabs mb-4 border-0">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-filter="all">ALL</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link shadow-none" data-filter="MOVIES">MOVIES</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link shadow-none" data-filter="TV">TV</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link shadow-none" data-filter="COMICS">COMICS</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link shadow-none" data-filter="ANIME">ANIME</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link shadow-none" data-filter="GAMING">GAMING</button>
+                        </li>
+                    </ul>
+
+                    <div id="posts-container">
+
+                        <!-- BLOG ITEM -->
+                        <div class="blog-item d-flex mb-4 position-relative">
+                            <div class="flex-grow-1 me-3">
+                                <span class="badge bg-danger mb-2">ACTIVE</span>
+                                <h4><a href="/article" class="text-reset text-decoration-none stretched-link">Final Fantasy: 5 Reasons The Buster Sword Is Best</a></h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                                <small>BY KELLY • JULY 23, 2022</small>
+                            </div>
+
+                            <div class="blog-img">
+                                <img src="https://picsum.photos/300/200">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Repeat more items -->
+                    <div class="blog-item d-flex mb-4 position-relative">
+                        <div class="flex-grow-1 me-3">
+                            <span class="badge bg-danger mb-2">INSPIRATION</span>
+                            <h4><a href="/article" class="text-reset text-decoration-none stretched-link">Valheim Releases New Frost Caves</a></h4>
+                            <p>Lorem ipsum dolor sit amet...</p>
+                            <small>BY KELLY • JULY 23, 2022</small>
+                        </div>
+
+                        <div class="blog-img">
+                            <img src="https://picsum.photos/301/200">
+                        </div>
+                    </div>
+
+                    <!-- LOAD MORE -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-danger mt-3" id="loadMoreBtn">LOAD MORE</button>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT: SIDEBAR -->
+                <div class="col-md-4">
+                    <div class="sidebar">
+
+                        <!-- SOCIAL -->
+                        <div class="sidebar-box p-4 shadow-sm border-0 position-relative mb-4">
+                            <h6 class="fw-bold mb-3 border-bottom pb-2" style="border-color: #eee;">Social</h6>
+
+                            <!-- FACEBOOK -->
+                            <div class="social-item d-flex align-items-center mb-3">
+                                <div class="social-icon fb"><i class="bi bi-facebook"></i></div>
+                                <div class="ms-3">
+                                    <strong>Facebook</strong><br>
+                                    <small>23k Likes</small>
+                                </div>
+                            </div>
+
+                            <!-- TWITTER -->
+                            <div class="social-item d-flex align-items-center mb-3">
+                                <div class="social-icon tw"><i class="bi bi-twitter-x"></i></div>
+                                <div class="ms-3">
+                                    <strong>Twitter</strong><br>
+                                    <small>93k Follows</small>
+                                </div>
+                            </div>
+
+                            <!-- YOUTUBE -->
+                            <div class="social-item d-flex align-items-center mb-3">
+                                <div class="social-icon yt"><i class="bi bi-youtube"></i></div>
+                                <div class="ms-3">
+                                    <strong>Youtube</strong><br>
+                                    <small>100k Subscribers</small>
+                                </div>
+                            </div>
+
+                            <!-- SPOTIFY -->
+                            <div class="social-item d-flex align-items-center">
+                                <div class="social-icon sp"><i class="bi bi-spotify"></i></div>
+                                <div class="ms-3">
+                                    <strong>Spotify</strong><br>
+                                    <small>65k Followers</small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- TRENDING -->
+                        <div class="sidebar-box p-4 shadow-sm border-0 position-relative mt-4">
+                            <h6 class="fw-bold mb-3 border-bottom pb-2" style="border-color: #eee;">Trending Now</h6>
+                            <ol class="trending-list list-unstyled mx-0 px-0 mb-0">
+                                <li class="d-flex align-items-center mb-3 position-relative">
+                                    <span class="trending-number text-danger fw-bolder fs-2 me-3 lh-1">1</span>
+                                    <div class="lh-sm">
+                                        <h6 class="mb-1 text-dark fw-bold" style="font-size:14px;"><a href="/article" class="text-reset text-decoration-none stretched-link">Project Hail Mary Movie Details Released</a></h6>
+                                        <small class="text-muted fw-bold" style="font-size:10px; letter-spacing: 0.5px;">MOVIE NEWS</small>
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-center mb-3 position-relative">
+                                    <span class="trending-number text-danger fw-bolder fs-2 me-3 lh-1">2</span>
+                                    <div class="lh-sm">
+                                        <h6 class="mb-1 text-dark fw-bold" style="font-size:14px;"><a href="/article" class="text-reset text-decoration-none stretched-link">For All Mankind Season 5 Premiere</a></h6>
+                                        <small class="text-muted fw-bold" style="font-size:10px; letter-spacing: 0.5px;">TV REVIEWS</small>
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-center position-relative">
+                                    <span class="trending-number text-danger fw-bolder fs-2 me-3 lh-1">3</span>
+                                    <div class="lh-sm">
+                                        <h6 class="mb-1 text-dark fw-bold" style="font-size:14px;"><a href="/article" class="text-reset text-decoration-none stretched-link">Invincible Season 4 Trailer Breakdown</a></h6>
+                                        <small class="text-muted fw-bold" style="font-size:10px; letter-spacing: 0.5px;">COMICS</small>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer mt-5">
+
+        <div class="container-fluid py-5 nav-footer-center">
+            <div class="row">
+
+                <!-- COLUMN 1 -->
+                <div class="col-md-3">
+                    <h6 class="footer-title">OUR BRAND</h6>
+                    <ul class="footer-links">
+                        <li>About Us</li>
+                        <li>Contact Us</li>
+                        <li>Review Policy</li>
+                        <li>Press & Events</li>
+                        <li>Join Our Team</li>
+                    </ul>
+                </div>
+
+                <!-- COLUMN 2 -->
+                <div class="col-md-3">
+                    <h6 class="footer-title">USEFUL LINKS</h6>
+                    <ul class="footer-links">
+                        <li>Movies</li>
+                        <li>TV</li>
+                        <li>Comics</li>
+                        <li>Gaming</li>
+                        <li>Anime</li>
+                    </ul>
+                </div>
+
+                <!-- COLUMN 3 -->
+                <div class="col-md-3">
+                    <h6 class="footer-title">CORPORATE</h6>
+                    <ul class="footer-links">
+                        <li>Valnet Publishing Group</li>
+                        <li>Advertising</li>
+                        <li>Careers</li>
+                        <li>Terms of Use</li>
+                        <li>Privacy Policy</li>
+                    </ul>
+                </div>
+
+                <!-- COLUMN 4 (SUBSCRIBE) -->
+                <div class="col-md-3">
+                    <h6 class="footer-title">SUBSCRIBE NOW</h6>
+                    <p class="footer-text">
+                        Subscribe to our mailing list to receive daily updates directly to your inbox!
+                    </p>
+
+                    <div class="d-flex mb-2">
+                        <input type="email" class="form-control me-2" placeholder="Enter E-mail">
+                        <button class="btn btn-danger">SUBSCRIBE</button>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label small">
+                            I consent to the terms and conditions
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BOTTOM BAR -->
+        <div class="footer-bottom text-center py-3">
+            © Copyright 2026 Parth. All rights reserved.
+            <div class="mt-2">
+                <a href="#">About Us</a> |
+                <a href="#">Private Policy</a> |
+                <a href="#">Forums</a>
+            </div>
+        </div>
+
+    </footer>
+    <script src="/static/js/script.js"></script>
+</body>
+
+</html>

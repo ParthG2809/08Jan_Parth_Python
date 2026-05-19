@@ -1,0 +1,202 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block title %}{{ target_user.full_name }} (@{{ target_user.email|truncatechars:10 }}) - WatchVerse{% endblock %}
+
+{% block extra_head %}
+<style>
+    .profile-banner {
+        height: 400px;
+        background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%), url("{% if profile.banner %}{{ profile.banner.url }}{% else %}{% static 'images/default_banner.png' %}{% endif %}");
+        background-size: cover;
+        background-position: center;
+    }
+    .profile-avatar-container {
+        margin-top: -100px;
+    }
+    .tab-active {
+        border-bottom: 3px solid #e50914;
+        color: #fff;
+    }
+    .glass-sidebar {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-7xl mx-auto mb-20 fade-in">
+    <!-- Profile Header/Banner -->
+    <div class="relative w-full profile-banner rounded-b-3xl shadow-2xl overflow-hidden">
+        <div class="absolute bottom-8 left-8 md:left-12 flex flex-col md:flex-row items-end gap-6 profile-avatar-container">
+            <!-- Avatar -->
+            <div class="relative group">
+                <img src="{% if profile.avatar %}{{ profile.avatar.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}" 
+                     class="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-black shadow-2xl object-cover">
+                {% if request.user == target_user %}
+                <a href="{% url 'edit-profile' %}" class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                    <i class="fas fa-camera text-2xl text-white"></i>
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Basic Info -->
+            <div class="mb-2 md:mb-4">
+                <h1 class="text-4xl md:text-6xl font-black tracking-tighter">{{ target_user.full_name }}</h1>
+                <div class="flex items-center gap-4 mt-2 text-gray-300">
+                    <span class="text-sm font-semibold tracking-widest uppercase opacity-60">{{ target_user.email|truncatechars:20 }}</span>
+                    {% if is_following %}
+                    <span class="px-2 py-0.5 bg-white/10 rounded text-[10px] uppercase font-bold tracking-widest">Follows You</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="absolute bottom-8 right-8 flex items-center gap-4">
+            {% if request.user == target_user %}
+            <a href="{% url 'edit-profile' %}" class="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-bold transition-all flex items-center gap-2 backdrop-blur-md">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
+            {% else %}
+            <a href="{% url 'follow-user' target_user.id %}" class="px-8 py-3 {% if is_following %}bg-white/10 border border-white/20 text-white{% else %}netflix-red text-white{% endif %} rounded-xl font-bold transition-all transform hover:scale-105 active:scale-95 shadow-xl">
+                {% if is_following %}Unfollow{% else %}Follow{% endif %}
+            </a>
+            <button class="w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl flex items-center justify-center backdrop-blur-md">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="flex flex-wrap items-center gap-8 mt-12 px-8 md:px-12 py-6 glass-sidebar rounded-2xl">
+        <div class="text-center md:text-left">
+            <span class="block text-2xl font-black">{{ followers_count }}</span>
+            <span class="text-xs uppercase tracking-widest text-gray-400 font-bold">Followers</span>
+        </div>
+        <div class="text-center md:text-left">
+            <span class="block text-2xl font-black">{{ following_count }}</span>
+            <span class="text-xs uppercase tracking-widest text-gray-400 font-bold">Following</span>
+        </div>
+        <div class="h-8 w-px bg-white/10 mx-4 hidden md:block"></div>
+        <div class="text-center md:text-left">
+            <span class="block text-2xl font-black text-red-500">{{ target_user.reviews.count }}</span>
+            <span class="text-xs uppercase tracking-widest text-gray-400 font-bold">Reviews</span>
+        </div>
+        <div class="text-center md:text-left">
+            <span class="block text-2xl font-black text-red-500">{{ profile.favorites.count }}</span>
+            <span class="text-xs uppercase tracking-widest text-gray-400 font-bold">Favorites</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-8">
+        <!-- Sidebar -->
+        <div class="lg:col-span-1 space-y-8">
+            <div class="glass-sidebar p-8 rounded-2xl">
+                <h3 class="text-xs uppercase tracking-[0.2em] font-black text-gray-500 mb-6">About</h3>
+                <p class="text-gray-300 leading-relaxed italic">
+                    {% if profile.bio %}"{{ profile.bio }}"{% else %}This cinephile hasn't written a bio yet.{% endif %}
+                </p>
+                
+                <div class="mt-10 space-y-6">
+                    <div>
+                        <h4 class="text-[10px] uppercase tracking-widest font-bold text-red-500 mb-2">Favorite Genres</h4>
+                        <div class="flex flex-wrap gap-2">
+                            {% if profile.favorite_genres %}
+                                {% for genre in profile.favorite_genres.split %}
+                                <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">{{ genre }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-xs text-gray-500 italic">No genres specified</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-[10px] uppercase tracking-widest font-bold text-red-500 mb-2">Joined</h4>
+                        <span class="text-sm text-gray-300">{{ target_user.date_joined|date:"F Y" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Chart Placeholder (Discord style) -->
+            <div class="glass-sidebar p-8 rounded-2xl">
+                <h3 class="text-xs uppercase tracking-[0.2em] font-black text-gray-500 mb-6">Watch Statistics</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-400">Movies Watched</span>
+                        <span class="text-sm font-bold">128</span>
+                    </div>
+                    <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-red-600 h-full w-[65%]"></div>
+                    </div>
+                    <div class="flex justify-between items-center mt-6">
+                        <span class="text-xs text-gray-400">Total Hours</span>
+                        <span class="text-sm font-bold">412h</span>
+                    </div>
+                    <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-red-600 h-full w-[40%]"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="lg:col-span-3">
+            <!-- Tabs -->
+            <div class="flex items-center border-b border-white/10 mb-8 overflow-x-auto">
+                <a href="?tab=activity" class="px-8 py-4 text-xs uppercase tracking-widest font-black transition-all {% if active_tab == 'activity' %}tab-active{% else %}text-gray-500 hover:text-gray-300{% endif %}">Activity</a>
+                <a href="?tab=reviews" class="px-8 py-4 text-xs uppercase tracking-widest font-black transition-all {% if active_tab == 'reviews' %}tab-active{% else %}text-gray-500 hover:text-gray-300{% endif %}">Reviews</a>
+                <a href="?tab=watchlist" class="px-8 py-4 text-xs uppercase tracking-widest font-black transition-all {% if active_tab == 'watchlist' %}tab-active{% else %}text-gray-500 hover:text-gray-300{% endif %}">Watchlist</a>
+                <a href="?tab=favorites" class="px-8 py-4 text-xs uppercase tracking-widest font-black transition-all {% if active_tab == 'favorites' %}tab-active{% else %}text-gray-500 hover:text-gray-300{% endif %}">Favorites</a>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="min-h-[400px]">
+                {% if active_tab == 'activity' %}
+                    <div class="space-y-4">
+                        {% for activity in activities %}
+                        <div class="p-6 bg-white/5 border border-white/5 rounded-2xl flex items-center gap-4 group hover:bg-white/[0.08] transition-all">
+                            <div class="w-12 h-12 bg-red-600/20 rounded-xl flex items-center justify-center text-red-500">
+                                {% if activity.activity_type == 'REVIEW' %}<i class="fas fa-star"></i>
+                                {% elif activity.activity_type == 'FOLLOW' %}<i class="fas fa-user-plus"></i>
+                                {% elif activity.activity_type == 'FAVORITE' %}<i class="fas fa-heart"></i>
+                                {% else %}<i class="fas fa-bolt"></i>{% endif %}
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-200">{{ activity.description }}</p>
+                                <span class="text-[10px] text-gray-500 uppercase font-bold">{{ activity.timestamp|timesince }} ago</span>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10">
+                            <i class="fas fa-ghost text-4xl text-white/20 mb-4"></i>
+                            <p class="text-gray-500">No recent activity to show.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                {% elif active_tab == 'favorites' %}
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        {% for item in favorites %}
+                        <div class="relative aspect-[2/3] rounded-xl overflow-hidden group shadow-2xl">
+                            <img src="{% if item.poster %}{{ item.poster.url }}{% else %}{% static 'images/movie_collage.png' %}{% endif %}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <h4 class="text-sm font-bold">{{ item.title }}</h4>
+                                <span class="text-[10px] uppercase text-gray-400">{{ item.release_year }}</span>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-span-full text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10">
+                            <p class="text-gray-500">No favorites added yet.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

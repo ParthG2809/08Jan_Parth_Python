@@ -1,0 +1,313 @@
+<!-- Note Detail Modal -->
+<div id="noteModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div onclick="closeNoteModal()" class="fixed inset-0 transition-opacity bg-black bg-opacity-75 backdrop-blur-sm" aria-hidden="true"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <!-- Modal panel -->
+        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+            <div class="absolute top-6 right-6">
+                <button onclick="closeNoteModal()" class="text-gray-400 hover:text-black dark:hover:text-white transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="p-10">
+                <div class="flex items-center gap-3 mb-6">
+                    <span id="modalCategory" class="px-2 py-1 bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold uppercase rounded"></span>
+                    <span id="modalStatus" class="px-2 py-1 text-[10px] font-bold uppercase rounded"></span>
+                </div>
+
+                <h2 id="modalTitle" class="text-4xl font-extrabold text-black dark:text-white mb-2 tracking-tighter"></h2>
+                <p class="text-gray-500 dark:text-gray-400 mb-8 font-medium">By <span id="modalAuthor" class="text-black dark:text-white"></span> • <span id="modalDate"></span></p>
+
+                <div class="prose max-w-none mb-10">
+                    <p id="modalContent" class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg whitespace-pre-wrap"></p>
+                </div>
+
+                <div class="flex flex-wrap gap-4 pt-8 border-t border-gray-100 dark:border-gray-800">
+                    <a id="modalDownloadTxt" href="#" class="inline-flex items-center gap-2 px-6 py-3 bg-black dark:bg-white text-white dark:text-black font-bold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition shadow-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Download TXT
+                    </a>
+                    <a id="modalDownloadFile" href="#" class="hidden inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-zinc-800 text-black dark:text-white border border-black dark:border-gray-600 font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Download Attachment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Note Modal -->
+<div id="editNoteModal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div onclick="closeEditModal()" class="fixed inset-0 transition-opacity bg-black bg-opacity-75 backdrop-blur-sm" aria-hidden="true"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <!-- Modal panel -->
+        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl sm:my-8 sm:align-middle sm:max-w-xl sm:w-full">
+            <div class="p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-2xl font-bold text-black dark:text-white uppercase tracking-tighter">Edit <span class="font-light">Note</span></h2>
+                    <button onclick="closeEditModal()" class="text-gray-400 hover:text-black dark:hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <form id="editNoteForm" class="space-y-6">
+                    {% csrf_token %}
+                    <input type="hidden" id="editNoteId">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Title</label>
+                            <input type="text" id="editTitle" required class="w-full p-4 bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition text-black dark:text-white font-medium" placeholder="Note Title">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Category</label>
+                            <select id="editCategory" required class="w-full p-4 bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition text-black dark:text-white font-medium">
+                                <option value="Python">Python</option>
+                                <option value="Java">Java</option>
+                                <option value="PHP">PHP</option>
+                                <option value="Javascript">Javascript</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Content</label>
+                        <textarea id="editContent" rows="6" required class="w-full p-4 bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition text-black dark:text-white font-medium" placeholder="Write your thoughts..."></textarea>
+                    </div>
+                    
+                    <div class="flex gap-4 pt-4">
+                        <button type="button" onclick="closeEditModal()" class="flex-1 py-4 bg-gray-100 dark:bg-zinc-800 text-black dark:text-white font-bold rounded-2xl hover:bg-gray-200 dark:hover:bg-zinc-700 transition">Cancel</button>
+                        <button type="submit" id="updateBtn" class="flex-1 py-4 bg-black dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:bg-gray-800 dark:hover:bg-gray-100 transition shadow-lg flex items-center justify-center gap-2">
+                            <span id="updateBtnText">Update Note</span>
+                            <div id="updateSpinner" class="hidden w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-10 right-10 z-[100] transform translate-y-20 opacity-0 transition-all duration-500 pointer-events-none">
+    <div class="bg-black dark:bg-white text-white dark:text-black px-6 py-4 rounded-2xl font-bold shadow-2xl flex items-center gap-3">
+        <span id="toastIcon"></span>
+        <span id="toastMessage"></span>
+    </div>
+</div>
+
+<script>
+    function openNoteModal(title, author, category, content, date, status, downloadTxtUrl, downloadFileUrl, authorId, currentUserId, isAdmin) {
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalAuthor').innerText = author;
+        document.getElementById('modalCategory').innerText = category;
+        document.getElementById('modalContent').innerText = content;
+        document.getElementById('modalDate').innerText = date;
+        document.getElementById('modalStatus').innerText = status;
+
+        // Status style
+        const statusBadge = document.getElementById('modalStatus');
+        statusBadge.className = 'px-2 py-1 text-[10px] font-bold uppercase rounded ';
+        if (status === 'Approved') statusBadge.classList.add('bg-green-100', 'text-green-600');
+        else if (status === 'Rejected') statusBadge.classList.add('bg-red-100', 'text-red-600');
+        else statusBadge.classList.add('bg-orange-100', 'text-orange-600');
+
+        // Downloads
+        const txtBtn = document.getElementById('modalDownloadTxt');
+        const fileBtn = document.getElementById('modalDownloadFile');
+
+        // TXT Download permission
+        if (authorId === currentUserId || isAdmin === 'true') {
+            if(txtBtn) {
+                txtBtn.classList.remove('hidden');
+                txtBtn.href = downloadTxtUrl;
+            }
+        } else {
+            if(txtBtn) txtBtn.classList.add('hidden');
+        }
+
+        // File Download permission
+        if (downloadFileUrl && (authorId === currentUserId || isAdmin === 'true')) {
+            if(fileBtn) {
+                fileBtn.classList.remove('hidden');
+                fileBtn.href = downloadFileUrl;
+                fileBtn.setAttribute('download', '');
+            }
+        } else {
+            if(fileBtn) fileBtn.classList.add('hidden');
+        }
+
+        document.getElementById('noteModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent scroll
+    }
+
+    function closeNoteModal() {
+        document.getElementById('noteModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Edit Modal Logic
+    function openEditModal(id, title, content, category) {
+        const editNoteId = document.getElementById('editNoteId');
+        if (!editNoteId) return; // Not on owner page or edit not available
+
+        editNoteId.value = id;
+        document.getElementById('editTitle').value = title;
+        document.getElementById('editContent').value = content;
+        document.getElementById('editCategory').value = category;
+        
+        document.getElementById('editNoteModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('editTitle').focus();
+    }
+
+    function closeEditModal() {
+        const modal = document.getElementById('editNoteModal');
+        if (modal) modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Toast logic
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMessage');
+        const toastIcon = document.getElementById('toastIcon');
+        
+        toastMsg.innerText = message;
+        toastIcon.innerText = type === 'success' ? '✅' : '❌';
+        
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+        
+        setTimeout(() => {
+            toast.classList.add('translate-y-20', 'opacity-0');
+            toast.classList.remove('translate-y-0', 'opacity-100');
+        }, 3000);
+    }
+
+    // Form submission (only if form exists)
+    const editForm = document.getElementById('editNoteForm');
+    if (editForm) {
+        editForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const noteId = document.getElementById('editNoteId').value;
+            const title = document.getElementById('editTitle').value;
+            const content = document.getElementById('editContent').value;
+            const category = document.getElementById('editCategory').value;
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            const updateBtn = document.getElementById('updateBtn');
+            const updateBtnText = document.getElementById('updateBtnText');
+            const updateSpinner = document.getElementById('updateSpinner');
+            
+            // UI Loading state
+            updateBtn.disabled = true;
+            updateBtnText.innerText = 'Updating...';
+            updateSpinner.classList.remove('hidden');
+            
+            try {
+                const response = await fetch(`/note/${noteId}/edit-ajax/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ title, content, category })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update DOM instantly
+                    const titleEl = document.getElementById(`note-title-${noteId}`);
+                    const contentEl = document.getElementById(`note-content-${noteId}`);
+                    const categoryEl = document.getElementById(`note-category-${noteId}`);
+                    
+                    if (titleEl) titleEl.innerText = data.title;
+                    if (contentEl) contentEl.innerText = data.content;
+                    if (categoryEl) categoryEl.innerText = data.category;
+                    
+                    // Show badge
+                    const badge = document.getElementById(`note-status-badge-${noteId}`);
+                    if (badge) {
+                        badge.innerText = `Pending (Edited ${data.updated_at})`;
+                        badge.classList.remove('hidden');
+                    }
+                    
+                    closeEditModal();
+                    showToast(data.message);
+                } else {
+                    showToast(data.error || 'Something went wrong', 'error');
+                }
+            } catch (error) {
+                console.error('AJAX Update Error:', error);
+                showToast('Network error, please try again', 'error');
+            } finally {
+                updateBtn.disabled = false;
+                updateBtnText.innerText = 'Update Note';
+                updateSpinner.classList.add('hidden');
+            }
+        });
+    }
+
+    async function toggleSave(noteId) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const icon = document.getElementById(`save-icon-${noteId}`);
+        
+        try {
+            const response = await fetch(`/note/${noteId}/save-toggle/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                if (data.saved) {
+                    icon.classList.remove('text-gray-400');
+                    icon.classList.add('fill-black', 'dark:fill-white', 'text-black', 'dark:text-white');
+                } else {
+                    icon.classList.remove('fill-black', 'dark:fill-white', 'text-black', 'dark:text-white');
+                    icon.classList.add('text-gray-400');
+                    
+                    // If we are on the saved notes page, remove the card
+                    if (window.location.pathname.includes('saved-notes')) {
+                        const card = icon.closest('.group');
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.95)';
+                        setTimeout(() => card.remove(), 300);
+                    }
+                }
+                showToast(data.message);
+            }
+        } catch (error) {
+            console.error('Save Toggle Error:', error);
+            showToast('Failed to save note', 'error');
+        }
+    }
+
+    // Close Modals on Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            closeNoteModal();
+            closeEditModal();
+        }
+    });
+
+    // Prevent modal content click from closing
+    document.querySelectorAll('#noteModal .inline-block, #editNoteModal .inline-block').forEach(el => {
+        el.addEventListener('click', e => e.stopPropagation());
+    });
+</script>

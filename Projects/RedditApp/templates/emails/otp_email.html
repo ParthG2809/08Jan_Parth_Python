@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify your Reddit Account</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f6f7f8; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header { background-color: #FF4500; padding: 20px; text-align: center; }
+        .logo { color: #ffffff; font-size: 24px; font-weight: bold; text-decoration: none; }
+        .content { padding: 40px; color: #1a1a1b; line-height: 1.6; }
+        .greeting { font-size: 20px; font-weight: 600; margin-bottom: 20px; }
+        .otp-box { background-color: #f6f7f8; border-radius: 12px; padding: 30px; text-align: center; margin: 30px 0; border: 1px dashed #edeff1; }
+        .otp-code { font-size: 48px; font-weight: 800; color: #FF4500; letter-spacing: 8px; margin: 0; }
+        .footer { padding: 20px; text-align: center; font-size: 12px; color: #7c7c7c; border-top: 1px solid #edeff1; }
+        .btn { display: inline-block; padding: 12px 24px; background-color: #FF4500; color: #ffffff; text-decoration: none; border-radius: 9999px; font-weight: 700; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">reddit</div>
+        </div>
+        <div class="content">
+            <div class="greeting">Hello {{ fullname }},</div>
+            <p>Welcome to Reddit! To finish setting up your account, please use the following verification code:</p>
+            
+            <div class="otp-box">
+                <p class="otp-code">{{ otp }}</p>
+            </div>
+            
+            <p>This code will expire in <strong>10 minutes</strong>. If you didn't request this code, you can safely ignore this email.</p>
+            
+            <p>Dive into anything!</p>
+        </div>
+        <div class="footer">
+            &copy; 2026 Reddit, Inc. All rights reserved.<br>
+            This is an automated message, please do not reply.
+        </div>
+    </div>
+</body>
+</html>

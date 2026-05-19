@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Calculator</title>
+</head>
+<body>
+    <h1 style="text-align: center; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">DOM Calculator</h1>
+    <hr>
+
+    <form action="">
+        <input type="number" id="txt1" placeholder="Number 1"> <br><br>
+        <input type="number" id="txt2" placeholder="Number 2"> <br><br>
+        <button onclick="btnSum()">Sum</button>
+        <button onclick="btnMul()">Mul</button>
+        <button onclick="btnSub()">Sub</button>
+        <button onclick="btnDiv()">Div</button>
+    </form>
+
+    <script>
+        function btnSum(){
+            var n1 = document.getElementById("txt1").value
+            var n2 = document.getElementById("txt2").value
+            var ans = Number(n1) + Number(n2)
+            alert("Sum is: " + ans)
+        }
+
+        function btnMul(){
+            var n1 = document.getElementById("txt1").value
+            var n2 = document.getElementById("txt2").value
+            var ans = Number(n1) * Number(n2)
+            alert("Mul is: " + ans)
+        }
+
+        function btnSub(){
+            var n1 = document.getElementById("txt1").value
+            var n2 = document.getElementById("txt2").value
+            var ans = Number(n1) - Number(n2)
+            alert("Sub is: " + ans)
+        }
+
+        function btnDiv(){
+            var n1 = document.getElementById("txt1").value
+            var n2 = document.getElementById("txt2").value
+            var ans = Number(n1) / Number(n2)
+            alert("Div is: " + ans)
+        }
+    </script>
+</body>
+</html>

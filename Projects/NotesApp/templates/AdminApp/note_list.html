@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-10 transition-colors duration-300">
+    <div class="mb-10 flex flex-col md:flex-row justify-between items-end gap-4">
+        <div>
+            <a href="{% url 'admin_dashboard' %}" class="text-xs font-bold text-gray-400 dark:text-zinc-500 uppercase tracking-widest hover:text-black dark:hover:text-white mb-2 flex items-center gap-1 transition-colors">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Dashboard
+            </a>
+            <h1 class="text-3xl font-bold text-black dark:text-white uppercase tracking-tighter">Note <span class="font-light">Review</span></h1>
+        </div>
+        
+        <div class="flex bg-gray-100 dark:bg-zinc-900 p-1 rounded-xl transition-colors">
+            <a href="?status=Pending" class="px-6 py-2 rounded-lg text-xs font-bold uppercase transition {% if request.GET.status == 'Pending' or not request.GET.status %}bg-black dark:bg-white text-white dark:text-black shadow-lg{% else %}text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white{% endif %}">Pending</a>
+            <a href="?status=Approved" class="px-6 py-2 rounded-lg text-xs font-bold uppercase transition {% if request.GET.status == 'Approved' %}bg-black dark:bg-white text-white dark:text-black shadow-lg{% else %}text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white{% endif %}">Approved</a>
+            <a href="?status=Rejected" class="px-6 py-2 rounded-lg text-xs font-bold uppercase transition {% if request.GET.status == 'Rejected' %}bg-black dark:bg-white text-white dark:text-black shadow-lg{% else %}text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white{% endif %}">Rejected</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6">
+        {% for note in notes %}
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row justify-between gap-6 transition-colors">
+            <div class="flex-grow">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="px-2 py-1 bg-gray-900 dark:bg-white text-white dark:text-black text-[10px] font-bold rounded transition-colors">{{ note.category }}</span>
+                    <span class="text-xs text-gray-400 dark:text-zinc-500">Submitted by <strong class="text-black dark:text-white">{{ note.user.full_name }}</strong> on {{ note.created_at|date:"M d, Y" }}</span>
+                </div>
+                <h2 class="text-2xl font-bold text-black dark:text-white mb-2">{{ note.title }}</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">{{ note.content }}</p>
+                
+                <div class="flex flex-wrap gap-4">
+                    {% if note.file_upload %}
+                    <a href="{{ note.file_upload.url }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-zinc-800 rounded-lg text-sm font-bold text-black dark:text-white border border-gray-100 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-700 transition" download target="_blank">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Attachment
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'note_download' note.pk %}" class="inline-flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg text-sm font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Download TXT
+                    </a>
+                </div>
+            </div>
+
+            {% if note.status == 'Pending' %}
+            <div class="flex flex-row md:flex-col gap-3 justify-center min-w-[150px]">
+                <form action="{% url 'admin_note_action' note.pk 'approve' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition shadow-md">Approve</button>
+                </form>
+                <form action="{% url 'admin_note_action' note.pk 'reject' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full py-3 bg-white dark:bg-zinc-800 text-red-600 border border-red-600 dark:border-red-900 font-bold rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition">Reject</button>
+                </form>
+            </div>
+            {% else %}
+            <div class="flex items-center justify-center min-w-[150px]">
+                <span class="px-6 py-2 rounded-full font-black uppercase text-xs border 
+                    {% if note.status == 'Approved' %}border-green-600 text-green-600{% else %}border-red-600 text-red-600{% endif %}">
+                    {{ note.status }}
+                </span>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="text-center py-32 bg-gray-50 dark:bg-zinc-900 rounded-3xl border-2 border-dashed border-gray-100 dark:border-gray-800 transition-colors">
+            <p class="text-gray-400 dark:text-zinc-600 font-bold italic">No notes found for this status.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="mt-8 flex justify-center gap-2">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}&status={{ request.GET.status }}" class="px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800 rounded-lg text-sm hover:bg-gray-50 transition text-black dark:text-white">Previous</a>
+        {% endif %}
+        <span class="px-4 py-2 font-bold text-black dark:text-white">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&status={{ request.GET.status }}" class="px-4 py-2 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800 rounded-lg text-sm hover:bg-gray-50 transition text-black dark:text-white">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+    <div class="max-w-md w-full space-y-8 bg-white dark:bg-zinc-900 p-10 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">Sign in to NotesApp</h2>
+            <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+                Welcome back!
+            </p>
+        </div>
+        <form class="mt-8 space-y-6" method="POST">
+            {% csrf_token %}
+            <div class="rounded-md shadow-sm space-y-4">
+                {% for field in form %}
+                <div class="space-y-1">
+                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">{{ field.label }}</label>
+                    <div class="relative group">
+                        {{ field }}
+                        {% if field.field.widget.input_type == 'password' %}
+                        <button type="button" id="toggle-{{ field.id_for_label }}" onclick="togglePassword('{{ field.id_for_label }}', 'this.id')" 
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black dark:hover:text-white focus:outline-none transition-colors"
+                                aria-label="Toggle password visibility">
+                            <!-- Eye Open -->
+                            <svg class="w-5 h-5 eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                            <!-- Eye Closed -->
+                            <svg class="w-5 h-5 eye-slash-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.225 0 2.392.27 3.434.742M15 12a3 3 0 11-6 0 3 3 0 016 0zm-11.212 7.324l18.424-18.424"></path>
+                            </svg>
+                        </button>
+                        {% endif %}
+                    </div>
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <script>
+                    // Fix the 'this.id' issue in onclick
+                    document.querySelectorAll('button[id^="toggle-"]').forEach(btn => {
+                        const originalOnclick = btn.getAttribute('onclick');
+                        btn.setAttribute('onclick', originalOnclick.replace("'this.id'", `'${btn.id}'`));
+                    });
+                </script>
+                <style>
+                    input {
+                        width: 100%;
+                        padding: 0.75rem;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 0.5rem;
+                        margin-top: 0.25rem;
+                        background-color: transparent;
+                        transition: all 0.3s ease;
+                    }
+                    .dark input {
+                        border-color: #27272a; /* zinc-800 */
+                        color: #ffffff;
+                    }
+                    input:focus {
+                        outline: none;
+                        border-color: #000;
+                        ring: 1px solid #000;
+                    }
+                </style>
+            <div class="flex items-center justify-end">
+                <a href="{% url 'forgot_password' %}" class="text-xs font-bold text-gray-400 hover:text-black dark:hover:text-white transition uppercase tracking-widest">Forgot Password?</a>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition">
+                    Log In
+                </button>
+            </div>
+        </form>
+        <div class="text-center">
+            <p class="text-sm text-gray-600">Don't have an account? <a href="{% url 'signup' %}" class="font-bold text-black hover:underline">Sign up</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

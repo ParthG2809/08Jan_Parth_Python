@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Cropper.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+
+<div class="max-w-4xl mx-auto px-4 py-10 transition-colors duration-300">
+    <div class="mb-10">
+        <h1 class="text-3xl font-bold text-black dark:text-white uppercase tracking-tighter">My <span class="font-light">Profile</span></h1>
+        <p class="text-gray-500 dark:text-gray-400 mt-2">Manage your personal information and profile picture.</p>
+    </div>
+
+    <form id="profileForm" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {% csrf_token %}
+        
+        <!-- Left: Profile Photo -->
+        <div class="lg:col-span-1">
+            <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 shadow-sm transition-colors text-center">
+                <div class="relative w-40 h-40 mx-auto mb-6 group">
+                    <div class="w-full h-full rounded-full overflow-hidden border-4 border-gray-50 dark:border-zinc-800 shadow-inner bg-gray-100 dark:bg-zinc-800">
+                        {% if user.profile_photo %}
+                            <img id="photoPreview" src="{{ user.profile_photo.url }}" alt="{{ user.full_name }}" class="w-full h-full object-cover">
+                        {% else %}
+                            <div id="photoPlaceholder" class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
+                                <svg class="w-20 h-20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <img id="photoPreview" src="#" alt="Preview" class="hidden w-full h-full object-cover">
+                        {% endif %}
+                    </div>
+                    <label for="{{ form.profile_photo.id_for_label }}" class="absolute bottom-2 right-2 p-3 bg-black dark:bg-white text-white dark:text-black rounded-full shadow-lg cursor-pointer hover:scale-110 transition active:scale-95">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </label>
+                    <div class="hidden">
+                        {{ form.profile_photo }}
+                    </div>
+                </div>
+                <h3 class="font-bold text-black dark:text-white text-xl">{{ user.full_name }}</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">{{ user.email }}</p>
+                
+                <div class="mt-8 pt-8 border-t border-gray-100 dark:border-gray-800 space-y-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Joined</span>
+                        <span class="font-bold text-black dark:text-white">{{ user.date_joined|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Status</span>
+                        <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[10px] font-bold rounded uppercase">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Information Form -->
+        <div class="lg:col-span-2">
+            <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 shadow-sm transition-colors">
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                            {{ form.full_name }}
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                            <input type="text" value="{{ user.email }}" disabled class="w-full p-4 bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-2xl text-gray-400 dark:text-zinc-500 cursor-not-allowed font-medium">
+                            <p class="text-[10px] text-gray-400 italic">Email cannot be changed.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Mobile Number</label>
+                            {{ form.mobile_number }}
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">City</label>
+                            {{ form.city }}
+                        </div>
+                    </div>
+
+                    <div class="pt-10 flex gap-4">
+                        <button type="submit" class="flex-1 py-4 bg-black dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:bg-gray-800 dark:hover:bg-gray-100 transition shadow-lg flex items-center justify-center gap-2">
+                            Update Profile
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Cropping Modal -->
+<div id="cropperModal" class="fixed inset-0 z-[100] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity bg-black bg-opacity-75 backdrop-blur-md" aria-hidden="true"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+            <div class="p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-black dark:text-white uppercase tracking-tighter">Crop <span class="font-light">Photo</span></h2>
+                    <button type="button" onclick="closeCropper()" class="text-gray-400 hover:text-black dark:hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                
+                <div class="max-h-[60vh] overflow-hidden rounded-2xl bg-gray-100 dark:bg-zinc-800">
+                    <img id="cropperImage" src="" alt="To crop" class="max-w-full block">
+                </div>
+
+                <div class="mt-8 flex gap-4">
+                    <button type="button" onclick="closeCropper()" class="flex-1 py-4 bg-gray-100 dark:bg-zinc-800 text-black dark:text-white font-bold rounded-2xl hover:bg-gray-200 dark:hover:bg-zinc-700 transition">Cancel</button>
+                    <button type="button" id="cropBtn" class="flex-1 py-4 bg-black dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:bg-gray-800 dark:hover:bg-gray-100 transition shadow-lg">Done Cropping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cropper.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script>
+    const photoInput = document.getElementById('{{ form.profile_photo.id_for_label }}');
+    const photoPreview = document.getElementById('photoPreview');
+    const photoPlaceholder = document.getElementById('photoPlaceholder');
+    const cropperModal = document.getElementById('cropperModal');
+    const cropperImage = document.getElementById('cropperImage');
+    const cropBtn = document.getElementById('cropBtn');
+    
+    let cropper;
+
+    photoInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                cropperImage.src = e.target.result;
+                cropperModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                
+                if (cropper) cropper.destroy();
+                
+                cropper = new Cropper(cropperImage, {
+                    aspectRatio: 1,
+                    viewMode: 2,
+                    guides: true,
+                    background: false,
+                    autoCropArea: 1,
+                    responsive: true,
+                });
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function closeCropper() {
+        cropperModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        photoInput.value = ''; // Reset if cancelled
+    }
+
+    cropBtn.addEventListener('click', function() {
+        if (!cropper) return;
+        
+        const canvas = cropper.getCroppedCanvas({
+            width: 500,
+            height: 500,
+        });
+
+        canvas.toBlob((blob) => {
+            // Update Preview
+            photoPreview.src = URL.createObjectURL(blob);
+            photoPreview.classList.remove('hidden');
+            if (photoPlaceholder) photoPlaceholder.classList.add('hidden');
+
+            // Replace file in input using DataTransfer
+            const croppedFile = new File([blob], 'profile_photo.jpg', { type: 'image/jpeg' });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(croppedFile);
+            photoInput.files = dataTransfer.files;
+
+            closeCropper();
+        }, 'image/jpeg');
+    });
+</script>
+{% endblock %}

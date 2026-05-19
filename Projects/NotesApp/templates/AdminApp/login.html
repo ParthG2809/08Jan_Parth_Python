@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Login - NotesApp{% endblock %}
+
+{% block content %}
+<div class="min-h-full flex items-center justify-center py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-md w-full space-y-8 bg-black p-10 rounded-2xl shadow-2xl">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-white">Staff Login</h2>
+            <p class="mt-2 text-center text-sm text-gray-400">
+                Authorized Personnel Only
+            </p>
+        </div>
+        <form class="mt-8 space-y-6" method="POST">
+            {% csrf_token %}
+            <div class="space-y-4">
+                {% for field in form %}
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-400 text-xs mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div>
+                <button type="submit" class="w-full py-3 px-4 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition">
+                    Access Dashboard
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    input {
+        width: 100%;
+        padding: 0.75rem;
+        background: #111;
+        border: 1px solid #333;
+        color: white;
+        border-radius: 0.5rem;
+    }
+    input:focus {
+        outline: none;
+        border-color: #555;
+    }
+</style>
+{% endblock %}

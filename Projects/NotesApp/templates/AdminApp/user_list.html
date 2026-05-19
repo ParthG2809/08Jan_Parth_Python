@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-10 transition-colors duration-300">
+    <div class="mb-10">
+        <a href="{% url 'admin_dashboard' %}"
+            class="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white flex items-center gap-1 mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                </path>
+            </svg>
+            Dashboard
+        </a>
+        <h1 class="text-3xl font-bold text-black dark:text-white uppercase tracking-tighter">User <span
+                class="font-light">Management</span></h1>
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Manage all registered users and their permissions.</p>
+        <a href="{% url 'admin_user_create' %}"
+            class="bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-100 transition flex items-center gap-2 shadow-lg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+            </svg>
+            Add New User
+        </a>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="flex items-center gap-1 mb-8 border-b border-gray-100 dark:border-gray-800 pb-px">
+        <a href="?tab=all" class="px-6 py-3 text-sm font-bold uppercase tracking-widest transition-all relative group {% if current_tab == 'all' %}text-black dark:text-white{% else %}text-gray-400 hover:text-black dark:hover:text-white{% endif %}">
+            All Users
+            {% if current_tab == 'all' %}
+            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-black dark:bg-white rounded-full"></div>
+            {% endif %}
+        </a>
+        <a href="?tab=verified" class="px-6 py-3 text-sm font-bold uppercase tracking-widest transition-all relative group {% if current_tab == 'verified' %}text-black dark:text-white{% else %}text-gray-400 hover:text-black dark:hover:text-white{% endif %}">
+            Verified
+            {% if current_tab == 'verified' %}
+            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-black dark:bg-white rounded-full"></div>
+            {% endif %}
+        </a>
+        <a href="?tab=blocked" class="px-6 py-3 text-sm font-bold uppercase tracking-widest transition-all relative group {% if current_tab == 'blocked' %}text-black dark:text-white{% else %}text-gray-400 hover:text-black dark:hover:text-white{% endif %}">
+            Blocked
+            {% if current_tab == 'blocked' %}
+            <div class="absolute bottom-0 left-0 w-full h-0.5 bg-black dark:bg-white rounded-full"></div>
+            {% endif %}
+        </a>
+    </div>
+
+    <!-- User Table -->
+    <div
+        class="bg-white dark:bg-zinc-900 rounded-3xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm transition-colors">
+        <table class="w-full text-left">
+            <thead
+                class="bg-black dark:bg-black text-white dark:text-white text-xs font-bold uppercase tracking-widest border-b border-gray-800">
+                <tr>
+                    <th class="px-6 py-5">Full Name</th>
+                    <th class="px-6 py-5">Email</th>
+                    <th class="px-6 py-5">Mobile Number</th>
+                    <th class="px-6 py-5">Verification</th>
+                    <th class="px-6 py-5">Account Status</th>
+                    <th class="px-6 py-5 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                {% for user in users %}
+                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800 transition">
+                    <td class="px-6 py-4 font-bold text-black dark:text-white flex items-center gap-2">
+                        {{ user.full_name }}
+                        {% if user.is_staff %}
+                        <span
+                            class="px-2 py-0.5 bg-black dark:bg-white text-white dark:text-black text-[10px] font-bold rounded uppercase transition-colors">Staff</span>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                        <span
+                            class="px-2 py-0.5 bg-orange-500 text-white text-[10px] font-bold rounded uppercase ring-2 ring-orange-500 ring-offset-2 dark:ring-offset-zinc-900">Superuser</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ user.email }}</td>
+                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{user.mobile_number}}</td>
+                    <td class="px-6 py-4">
+                        {% if user.is_verified %}
+                        <span class="text-green-600 dark:text-green-400 flex items-center gap-1 font-bold text-xs">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            Verified
+                        </span>
+                        {% else %}
+                        <span
+                            class="text-gray-400 dark:text-zinc-500 font-bold text-xs uppercase tracking-tighter">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 dark:text-gray-300">
+                        {% if user.is_active %}
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span> Active
+                        {% else %}
+                        <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-2"></span> Inactive
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 text-right flex justify-end items-center gap-3">
+                        <a href="{% url 'admin_user_update' user.pk %}"
+                            class="p-2 text-gray-400 hover:text-black dark:hover:text-white transition"
+                            title="Edit User">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <a href="{% url 'admin_user_delete' user.pk %}"
+                            class="p-2 text-gray-400 hover:text-red-600 transition" title="Delete User">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <div class="h-6 w-px bg-gray-100 dark:bg-gray-800 mx-1"></div>
+
+                        {% if not user.is_staff %}
+                        <form action="{% url 'admin_promote_user' user.pk %}" method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition shadow-md">
+                                Promote
+                            </button>
+                        </form>
+                        {% endif %}
+                        <form action="{% url 'admin_toggle_user' user.pk %}" method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">
+                                {% if user.is_active %}Block{% else %}Unblock{% endif %}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="mt-8 flex justify-center gap-2">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&tab={{ current_tab }}"
+            class="px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-gray-800 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-zinc-700 text-black dark:text-white transition">Previous</a>
+        {% endif %}
+        <span class="px-4 py-2 font-bold text-black dark:text-white">{{ page_obj.number }} / {{
+            page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&tab={{ current_tab }}"
+            class="px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-gray-800 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-zinc-700 text-black dark:text-white transition">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

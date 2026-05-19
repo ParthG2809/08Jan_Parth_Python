@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Out - SocialAuth{% endblock %}
+
+{% block content %}
+<div class="auth-card animate-fade-in" style="text-align: center;">
+    <div style="font-size: 4rem; color: var(--primary); margin-bottom: 1.5rem;">
+        <i class="fas fa-sign-out-alt"></i>
+    </div>
+    <h1 style="font-size: 2rem; margin-bottom: 1rem;">Sign Out</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Are you sure you want to sign out from your account?</p>
+    
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1rem; font-size: 1.1rem;">
+            Confirm Sign Out
+        </button>
+    </form>
+    
+    <div style="margin-top: 1.5rem;">
+        <a href="/" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
+            <i class="fas fa-arrow-left"></i> Go back to home
+        </a>
+    </div>
+</div>
+{% endblock %}

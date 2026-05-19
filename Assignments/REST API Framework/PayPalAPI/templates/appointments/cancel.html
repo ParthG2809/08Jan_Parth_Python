@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-12">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8 text-center">
+        <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Payment Cancelled</h1>
+        <p class="text-gray-600 mb-8">Your payment was cancelled. No charges were made to your account. You can try booking again when you are ready.</p>
+        
+        <a href="{% url 'appointments:doctor_list' %}" class="block w-full bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-lg hover:bg-gray-300 transition-colors duration-300">
+            Return to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

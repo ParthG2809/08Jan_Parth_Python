@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <h1 style="text-align: center; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Demo JavaScript</h1>
+    <hr>
+    <script>
+        /* var no1 = Number(prompt("Enter Number 1: "))
+        var no2 = Number(prompt("Enter Number 2: "))
+        var sum = no1 + no2
+        alert("The sum is: "+sum) */
+
+        function myfunc(){
+            alert("This is a user defined function")
+        }
+
+        myfunc()
+
+        var no1 = Number(prompt("Enter Number 1: "))
+        var no2 = Number(prompt("Enter Number 2: "))
+        var sum = no1 + no2
+
+        /* Swal.fire({
+            title: "The sum of "+ no1 + " and " + no2 + " is",
+            text: sum,
+            icon: "success"
+            }); */
+
+        Swal.fire({
+                title: "Are you sure you want to add?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, add it!"
+            }).then((result) => {
+                if (result.isConfirmed) Swal.fire({
+                    title: "The sum of "+ no1 + " and " + no2 + " is",
+                    text: sum,
+                    icon: "success"
+                });
+            });
+    </script>
+</body>
+</html>

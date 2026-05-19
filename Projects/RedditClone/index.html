@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Reddit Style Feed</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+    <div class="logo">Reddit</div>
+    <div class="search-bar">
+        <input type="text" placeholder="Search Reddit" id="searchInput">
+    </div>
+    <div class="auth-buttons">
+        <button class="login-btn">Log In</button>
+        <button class="signup-btn">Sign Up</button>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Main Feed Section -->
+    <div class="feed">
+        <!-- New Post Form -->
+        <div class="create-post">
+            <h3>Create a post</h3>
+            <input type="text" id="postTitle" placeholder="Title" maxlength="100">
+            <textarea id="postText" rows="2" placeholder="Text (optional)"></textarea>
+            <button id="submitPostBtn">Post</button>
+        </div>
+
+        <!-- Posts will be injected here -->
+        <div id="postsContainer"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="widget">
+            <h4>Trending Communities</h4>
+            <ul class="trending-list">
+                <li>r/technology</li>
+                <li>r/worldnews</li>
+                <li>r/gaming</li>
+                <li>r/science</li>
+                <li>r/movies</li>
+            </ul>
+        </div>
+        <div class="widget">
+            <h4>About Reddit Clone</h4>
+            <p style="font-size:13px">This is a frontend demo showing a Reddit-like interface with voting and new posts. All data is stored locally in your browser for this demo.</p>
+        </div>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

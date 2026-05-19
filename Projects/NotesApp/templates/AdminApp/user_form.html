@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-10 transition-colors duration-300">
+    <div class="mb-10">
+        <a href="{% url 'admin_users' %}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white flex items-center gap-1 mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to Users
+        </a>
+        <h1 class="text-3xl font-bold text-black dark:text-white uppercase tracking-tighter">
+            {% if object %}Edit <span class="font-light">User</span>{% else %}Add <span class="font-light">New User</span>{% endif %}
+        </h1>
+    </div>
+
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 shadow-2xl shadow-gray-100 dark:shadow-none transition-colors">
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                    {{ form.full_name }}
+                    {% if form.full_name.errors %}<p class="text-red-500 text-xs font-bold mt-1">{{ form.full_name.errors.0 }}</p>{% endif %}
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<p class="text-red-500 text-xs font-bold mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Mobile Number</label>
+                    {{ form.mobile_number }}
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">City</label>
+                    {{ form.city }}
+                </div>
+                <div class="space-y-2 md:col-span-2">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Password</label>
+                    {{ form.password }}
+                    <p class="text-[10px] text-gray-400 italic mt-1">{{ form.password.help_text }}</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                <div class="flex items-center gap-3 bg-gray-50 dark:bg-zinc-800 p-4 rounded-2xl border border-gray-100 dark:border-zinc-700 transition-colors">
+                    {{ form.is_verified }}
+                    <label class="text-sm font-bold text-black dark:text-white">Verified</label>
+                </div>
+                <div class="flex items-center gap-3 bg-gray-50 dark:bg-zinc-800 p-4 rounded-2xl border border-gray-100 dark:border-zinc-700 transition-colors">
+                    {{ form.is_active }}
+                    <label class="text-sm font-bold text-black dark:text-white">Active</label>
+                </div>
+                <div class="flex items-center gap-3 bg-gray-50 dark:bg-zinc-800 p-4 rounded-2xl border border-gray-100 dark:border-zinc-700 transition-colors">
+                    {{ form.is_staff }}
+                    <label class="text-sm font-bold text-black dark:text-white">Staff/Admin</label>
+                </div>
+            </div>
+
+            <div class="flex gap-4 pt-8">
+                <a href="{% url 'admin_users' %}" class="flex-1 py-4 bg-gray-100 dark:bg-zinc-800 text-black dark:text-white font-bold rounded-2xl text-center hover:bg-gray-200 dark:hover:bg-zinc-700 transition">Cancel</a>
+                <button type="submit" class="flex-1 py-4 bg-black dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:bg-gray-800 dark:hover:bg-gray-100 transition shadow-lg">
+                    {% if object %}Save Changes{% else %}Create User{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

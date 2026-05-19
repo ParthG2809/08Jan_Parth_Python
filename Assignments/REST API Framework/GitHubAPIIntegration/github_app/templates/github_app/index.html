@@ -1,0 +1,14 @@
+{% extends 'github_app/base.html' %}
+
+{% block content %}
+<h2>List Repositories</h2>
+<p>Enter a GitHub username to list their public repositories.</p>
+<form method="post" action="{% url 'list_repositories' %}">
+    {% csrf_token %}
+    <div>
+        <label for="username">GitHub Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <button type="submit">List Repositories</button>
+</form>
+{% endblock %}

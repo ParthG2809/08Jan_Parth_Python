@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies - GamePlus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <!-- CUSTOM SIDEBAR -->
+    <div id="customSidebar" class="custom-sidebar">
+        <!-- Exact same sidebar as index.html -->
+        <div class="sidebar-header w-100 mb-2 px-4 pt-4 pb-0" style="flex-direction: column; align-items: stretch; justify-content: flex-start;">
+            <div id="sidebarDefaultHeader" class="d-flex justify-content-between align-items-center w-100">
+                <i class="bi bi-search text-white hover-warning" id="sidebarSearchBtn" style="font-size: 22px; cursor: pointer;"></i>
+                <i class="bi bi-x sidebar-close" id="closeSidebar"></i>
+            </div>
+            
+            <div id="sidebarSearchState" class="d-none justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center flex-grow-1 border-bottom pb-1 me-3" style="border-color: #ffb800 !important;">
+                    <i class="bi bi-search" style="font-size: 20px; color: #ffb800;"></i>
+                    <input type="text" id="sidebarSearchInput" class="form-control bg-transparent border-0 shadow-none px-2 py-0" placeholder="Search..." style="color: #fff !important; box-shadow: none !important; outline: none; caret-color: #ffb800;">
+                    <i class="bi bi-x" id="clearSearchBtn" style="font-size: 28px; cursor: pointer; color: #ffb800; line-height: 1;"></i>
+                </div>
+                <i class="bi bi-x sidebar-close" id="closeSidebarInner" style="font-size: 32px; cursor: pointer; color: #fff;"></i>
+            </div>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-cats">
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">MOVIES</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Movie Features</a></li>
+                        <li><a href="#">Movie News</a></li>
+                        <li><a href="#">Movie Reviews</a></li>
+                        <li><a href="#">Movie Lists</a></li>
+                        <li><a href="#">Movie Trailers</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">TV</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">TV Features</a></li>
+                        <li><a href="#">TV News</a></li>
+                        <li><a href="#">TV Reviews</a></li>
+                        <li><a href="#">Network TV</a></li>
+                        <li><a href="#">TV Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">REALITY TV</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Reality TV Features</a></li>
+                        <li><a href="#">Reality TV News</a></li>
+                        <li><a href="#">Reality TV Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">GAMING</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Game Features</a></li>
+                        <li><a href="#">Game News</a></li>
+                        <li><a href="#">Game Guides</a></li>
+                        <li><a href="#">Game Reviews</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">COMICS</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Comic News</a></li>
+                        <li><a href="#">Comic Reviews</a></li>
+                        <li><a href="#">Comic Features</a></li>
+                        <li><a href="#">Comic Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">ANIME</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Anime News</a></li>
+                        <li><a href="#">Anime Features</a></li>
+                        <li><a href="#">Anime Reviews</a></li>
+                        <li><a href="#">Anime Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">MUSIC</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Music News</a></li>
+                        <li><a href="#">Music Features</a></li>
+                        <li><a href="#">Music Reviews</a></li>
+                        <li><a href="#">Music Lists</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">NETWORK TV SCHEDULE</a>
+                    </div>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">VIDEOS</a>
+                    </div>
+                </li>
+                <li class="sidebar-cat-item">
+                    <div class="cat-header">
+                        <a href="#">MORE</a>
+                        <i class="bi bi-plus toggle-sub"></i>
+                    </div>
+                    <ul class="sub-cats">
+                        <li><a href="#">Exclusives</a></li>
+                        <li><a href="#">SR Database</a></li>
+                        <li><a href="#">Interviews</a></li>
+                        <li><a href="#">Podcasts</a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer-links mt-4">
+                <a href="#"><i class="bi bi-person me-2" style="font-size: 20px;"></i> <b>Sign In</b></a>
+                <a href="#"><i class="bi bi-envelope me-2" style="font-size: 20px;"></i> <b>Newsletter</b></a>
+            </div>
+            
+            <div class="sidebar-socials mt-4 mb-3">
+                <a href="#"><i class="bi bi-youtube"></i></a>
+                <a href="#"><i class="bi bi-facebook"></i></a>
+                <a href="#"><i class="bi bi-instagram"></i></a>
+                <a href="#"><i class="bi bi-twitter-x"></i></a>
+                <a href="#"><i class="bi bi-tiktok"></i></a>
+                <a href="#" style="border:none;"><i class="bi bi-plus text-warning bg-transparent" style="font-size:24px;"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- SIDEBAR OVERLAY -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <nav class="navbar wesper-navbar pt-3 pb-0">
+        <div class="container-fluid nav-footer-center flex-column align-items-stretch">
+
+            <!-- TOP ROW -->
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <!-- LOGO -->
+                <a class="navbar-brand logo" href="/">
+                    game<span>plus</span>
+                </a>
+
+                <!-- RIGHT ICONS -->
+                <div class="nav-icons d-flex align-items-center">
+                    <i class="bi bi-moon" id="themeToggle" style="cursor: pointer;"></i>
+                    <i class="bi bi-bag"></i>
+                    <i class="bi bi-list"></i>
+                </div>
+            </div>
+
+            <!-- BOTTOM ROW -->
+            <div class="d-none d-lg-flex w-100 mt-2">
+                <ul class="navbar-nav flex-row align-items-center justify-content-between w-100 pb-2">
+                    <li class="nav-item">
+                        <a class="nav-link active text-warning px-0 mx-0" href="#">Trending</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Spring Movie Preview</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Spring TV Preview</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Exclusives</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Best on Streaming</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">SR Database</a>
+                    </li>
+                    <li class="nav-item d-none d-xl-block text-white-50">•</li>
+                    <li class="nav-item">
+                        <a class="nav-link px-0 mx-0" href="#">Network TV Schedule</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="wesper-wrapper">
+        
+        <!-- CATEGORY TITLE BANNER -->
+        <div class="container-fluid mt-4">
+            <div class="category-header-banner">
+                <h1>Movies</h1>
+                <p>The latest and exclusive Movies coverage from GamePlus, featuring breaking news, features, and in-depth reviews.</p>
+            </div>
+        </div>
+
+        <!-- FEATURED HERO -->
+        <div class="container-fluid mt-4">
+            <h4 class="section-title">FEATURED</h4>
+            <div class="row">
+                <!-- LEFT BIG HERO -->
+                <div class="col-md-8">
+                    <div class="hero-card big-hero mb-3">
+                        <img src="https://picsum.photos/800/500?movies=1">
+                        <div class="hero-overlay">
+                            <span class="badge bg-danger mb-2">BREAKING</span>
+                            <h2><a href="article.html" class="text-reset text-decoration-none stretched-link">Scream 7 Review: A Bloody Good Return to Form</a></h2>
+                            <small>BY KELLY • JULY 29, 2026</small>
+                        </div>
+                        <div class="rating" style="--value: 87%;"><span>8.7</span></div>
+                    </div>
+                </div>
+    
+                <!-- RIGHT SIDE -->
+                <div class="col-md-4 d-flex flex-column">
+                    <div class="hero-card small-hero mb-3">
+                        <img src="https://picsum.photos/400/250?movies=2">
+                        <div class="hero-overlay">
+                            <span class="badge bg-danger mb-1">INTERVIEW</span>
+                            <h6><a href="article.html" class="text-reset text-decoration-none stretched-link">Halle Berry Talks Crime 101, Embracing Her Age On Screen</a></h6>
+                            <small>BY ALEX • JULY 29, 2026</small>
+                        </div>
+                    </div>
+                    <div class="hero-card small-hero mb-3">
+                        <img src="https://picsum.photos/401/250?movies=3">
+                        <div class="hero-overlay">
+                            <span class="badge bg-danger mb-1">MOVIES</span>
+                            <h6><a href="article.html" class="text-reset text-decoration-none stretched-link">Method Man On His Career ‘Second Act'</a></h6>
+                            <small>BY KELLY • JULY 29, 2026</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- MOVIE NEWS (using Game Card block strategy) -->
+        <div class="container-fluid mt-5">
+            <h4 class="section-title">MOVIE NEWS</h4>
+            <div class="row">
+                <!-- CARD 1 -->
+                <div class="col-md-4">
+                    <div class="game-card mb-4">
+                        <img src="https://picsum.photos/400/300?movies=4">
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-2">UPDATE</span>
+                            <h5><a href="article.html" class="text-reset text-decoration-none stretched-link">Quentin Tarantino's Long-Awaited Sequel Gets New Images</a></h5>
+                            <small>BY JOHN • JULY 26, 2026</small>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- CARD 2 -->
+                <div class="col-md-4">
+                    <div class="game-card mb-4">
+                        <img src="https://picsum.photos/401/300?movies=5">
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-2">MILKED</span>
+                            <h5><a href="article.html" class="text-reset text-decoration-none stretched-link">Super Smash Bros Movie Potential Addressed By Shigeru Miyamoto</a></h5>
+                            <small>BY KELLY • JULY 26, 2026</small>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- CARD 3 -->
+                <div class="col-md-4">
+                    <div class="game-card mb-4">
+                        <img src="https://picsum.photos/402/300?movies=6">
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-2">CASTING</span>
+                            <h5><a href="article.html" class="text-reset text-decoration-none stretched-link">Spider-Man Meets Cable As Marvel's New Spider-Smasher</a></h5>
+                            <small>BY KELLY • JULY 26, 2026</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MOVIE REVIEWS (using small card block strategy) -->
+        <div class="container-fluid mt-4 mb-4">
+            <h4 class="section-title">MOVIE REVIEWS</h4>
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="explore-card small-card mb-3">
+                        <img src="https://picsum.photos/301/250?review=1">
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-1">REVIEW</span>
+                            <h6><a href="article.html" class="text-reset text-decoration-none stretched-link">The Blue Trail Review: Brazil's Light Sci-Fi Comedy</a></h6>
+                            <small>BY GREGORY</small>
+                        </div>
+                        <div class="rating small" style="--value: 73%;"><span>7.3</span></div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="explore-card small-card mb-3">
+                        <img src="https://picsum.photos/302/250?review=2">
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-1">REVIEW</span>
+                            <h6><a href="article.html" class="text-reset text-decoration-none stretched-link">Forbidden Fruits Review: Sisterhood Gets Sinister</a></h6>
+                            <small>BY GRAEME</small>
+                        </div>
+                        <div class="rating small" style="--value: 81%;"><span>8.1</span></div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="explore-card small-card mb-3">
+                        <img src="https://picsum.photos/303/250?review=3">
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-1">REVIEW</span>
+                            <h6><a href="article.html" class="text-reset text-decoration-none stretched-link">They Will Kill You Review: Stylish Gorefest</a></h6>
+                            <small>BY ALEX</small>
+                        </div>
+                        <div class="rating small" style="--value: 65%;"><span>6.5</span></div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="explore-card small-card mb-3">
+                        <img src="https://picsum.photos/304/250?review=4">
+                        <div class="overlay">
+                            <span class="badge bg-danger mb-1">REVIEW</span>
+                            <h6><a href="article.html" class="text-reset text-decoration-none stretched-link">A24 Romantic Shocker Is Thrilling, Funny</a></h6>
+                            <small>BY ALEX</small>
+                        </div>
+                        <div class="rating small" style="--value: 90%;"><span>9.0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <!-- LEFT: BLOG FEED -->
+                <div class="col-md-8">
+                    <h4 class="section-title">LATEST IN MOVIES</h4>
+                    <div id="posts-container">
+    
+                        <!-- BLOG ITEM 1 -->
+                        <div class="blog-item d-flex mb-4 border-bottom pb-4 position-relative">
+                            <div class="flex-grow-1 me-4">
+                                <span class="badge bg-danger mb-2">LISTS</span>
+                                <h4><a href="article.html" class="text-reset text-decoration-none stretched-link">10 Underrated Monster Horror Movies That Deserve A Second Look</a></h4>
+                                <p>From forgotten practical effects masterpieces to early 2000s CGI oddities, these monster horror films are worth watching.</p>
+                                <small>BY ANTHONY YATES • JULY 23, 2026</small>
+                            </div>
+                            <div class="blog-img">
+                                <img src="https://picsum.photos/300/200?movies=7">
+                            </div>
+                        </div>
+    
+                        <!-- BLOG ITEM 2 -->
+                        <div class="blog-item d-flex mb-4 border-bottom pb-4 position-relative">
+                            <div class="flex-grow-1 me-4">
+                                <span class="badge bg-danger mb-2">FEATURES</span>
+                                <h4><a href="article.html" class="text-reset text-decoration-none stretched-link">5 Reasons Super Mario Galaxy Movie's Score Is Worse Than The First</a></h4>
+                                <p>Rotten Tomatoes wasn't kind to the newest Nintendo effort...</p>
+                                <small>BY COOPER HOOD • JULY 23, 2026</small>
+                            </div>
+                            <div class="blog-img">
+                                <img src="https://picsum.photos/301/200?movies=8">
+                            </div>
+                        </div>
+                        
+                        <!-- BLOG ITEM 3 -->
+                        <div class="blog-item d-flex mb-4 pb-2 position-relative">
+                            <div class="flex-grow-1 me-4">
+                                <span class="badge bg-danger mb-2">FEATURES</span>
+                                <h4><a href="article.html" class="text-reset text-decoration-none stretched-link">Martin Scorsese’s New Leonardo DiCaprio Movie Continues Growing Trend</a></h4>
+                                <p>The legendary partnership yields yet another awards season darling, proving they haven't lost a step.</p>
+                                <small>BY DHRUV SHARMA • JULY 22, 2026</small>
+                            </div>
+                            <div class="blog-img">
+                                <img src="https://picsum.photos/302/200?movies=9">
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                    <!-- LOAD MORE -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-danger btn-lg mt-3 fw-bold" style="padding: 10px 40px;" id="loadMoreBtn">LOAD MORE</button>
+                    </div>
+    
+                </div>
+    
+                <!-- RIGHT: SIDEBAR -->
+                <div class="col-md-4">
+                    <div class="sidebar">
+                        <!-- SOCIAL -->
+                        <div class="sidebar-box mb-4">
+                            <h6>Social</h6>
+    
+                            <div class="social-item d-flex align-items-center mb-3">
+                                <div class="social-icon fb"><i class="bi bi-facebook"></i></div>
+                                <div class="ms-3">
+                                    <strong>Facebook</strong><br>
+                                    <small>23k Likes</small>
+                                </div>
+                            </div>
+    
+                            <div class="social-item d-flex align-items-center mb-3">
+                                <div class="social-icon tw"><i class="bi bi-twitter-x"></i></div>
+                                <div class="ms-3">
+                                    <strong>Twitter</strong><br>
+                                    <small>93k Follows</small>
+                                </div>
+                            </div>
+                            
+                            <div class="social-item d-flex align-items-center mb-3">
+                                <div class="social-icon yt"><i class="bi bi-youtube"></i></div>
+                                <div class="ms-3">
+                                    <strong>Youtube</strong><br>
+                                    <small>100k Subscribers</small>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- TRENDING NOW -->
+                        <div class="sidebar-box mt-4">
+                            <h6>Trending Now</h6>
+    
+                            <div class="mini-post d-flex mb-3 position-relative">
+                                <img src="https://picsum.photos/100/80?trend=1" class="me-2 rounded shadow-sm">
+                                <div>
+                                    <h6><a href="article.html" class="text-reset text-decoration-none stretched-link">Avatar 3 Digital Release Day</a></h6>
+                                    <small class="text-muted">July 26, 2026</small>
+                                </div>
+                            </div>
+    
+                            <div class="mini-post d-flex mb-3 position-relative">
+                                <img src="https://picsum.photos/101/80?trend=2" class="me-2 rounded shadow-sm">
+                                <div>
+                                    <h6><a href="article.html" class="text-reset text-decoration-none stretched-link">Disney's $2.8B Franchise Success</a></h6>
+                                    <small class="text-muted">July 26, 2026</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer mt-5">
+        <div class="container-fluid py-5 nav-footer-center">
+            <div class="row">
+                <div class="col-md-3">
+                    <h6 class="footer-title">OUR BRAND</h6>
+                    <ul class="footer-links">
+                        <li>About Us</li>
+                        <li>Contact Us</li>
+                        <li>Review Policy</li>
+                        <li>Press & Events</li>
+                        <li>Join Our Team</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="footer-title">USEFUL LINKS</h6>
+                    <ul class="footer-links">
+                        <li>Movies</li>
+                        <li>TV</li>
+                        <li>Comics</li>
+                        <li>Gaming</li>
+                        <li>Anime</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="footer-title">CORPORATE</h6>
+                    <ul class="footer-links">
+                        <li>Valnet Publishing Group</li>
+                        <li>Advertising</li>
+                        <li>Careers</li>
+                        <li>Terms of Use</li>
+                        <li>Privacy Policy</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="footer-title">SUBSCRIBE NOW</h6>
+                    <p class="footer-text">
+                        Subscribe to our mailing list to receive daily updates directly to your inbox!
+                    </p>
+                    <div class="d-flex mb-2">
+                        <input type="email" class="form-control me-2" placeholder="Enter E-mail">
+                        <button class="btn btn-danger">SUBSCRIBE</button>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox">
+                        <label class="form-check-label small">
+                            I consent to the terms and conditions
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center py-3">
+            © Copyright 2026 Parth. All rights reserved.
+            <div class="mt-2">
+                <a href="#">About Us</a> |
+                <a href="#">Private Policy</a> |
+                <a href="#">Forums</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

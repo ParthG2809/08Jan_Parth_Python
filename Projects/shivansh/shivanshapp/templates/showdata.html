@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+</head>
+
+<body style="background-color: skyblue;">
+    <h1 style="text-align: center;">Welcome to ShowPage</h1>
+    <hr>
+    <table align="center" border="2">
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>EMAIL</th>
+            <th>ADDRESS</th>
+            <th>ACTION</th>
+        </tr>
+        {% for i in data %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.email}}</td>
+            <td>{{i.address}}</td>
+            <td><a href="{% url 'updatedata' i.id %}">Update</a> &nbsp; <a href="{% url 'deletedata' i.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+</body>
+
+</html>

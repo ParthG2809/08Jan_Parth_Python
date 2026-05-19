@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoPulse | Premium Address Geocoder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'geocoder/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>GeoPulse</h1>
+            <p class="subtitle">Precision Geocoding via Google Maps API</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="search-box">
+                    <input type="text" name="address" placeholder="Enter an address (e.g., White House, DC)" value="{{ address|default:'' }}" required>
+                </div>
+                <button type="submit">Find Coordinates</button>
+            </form>
+
+            {% if error %}
+                <div class="error-msg">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            {% if not api_key_configured %}
+                <div class="warning-banner">
+                    <strong>Notice:</strong> Google Maps API Key is not configured. Please add it to your <code>.env</code> file.
+                </div>
+            {% endif %}
+
+            {% if result %}
+                <div class="result-card">
+                    <div class="result-title">Location Found</div>
+                    <div class="address-text">{{ result.formatted_address }}</div>
+                    
+                    <div class="coords-grid">
+                        <div class="coord-item">
+                            <div class="coord-label">Latitude</div>
+                            <div class="coord-value">{{ result.lat|floatformat:6 }}</div>
+                        </div>
+                        <div class="coord-item">
+                            <div class="coord-label">Longitude</div>
+                            <div class="coord-value">{{ result.lng|floatformat:6 }}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

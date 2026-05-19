@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast | Premium Weather Experience</title>
+    <link rel="stylesheet" href="{% static 'weatherapp/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="weather-card">
+            <h2 style="margin-bottom: 2rem; font-weight: 300; letter-spacing: 2px; color: rgba(255,255,255,0.7)">SKYCAST</h2>
+            
+            <form method="POST" class="search-box">
+                {% csrf_token %}
+                <input type="text" name="city" placeholder="Search city..." autocomplete="off" required>
+                {% if weather_data or error_message %}
+                    <a href="{% url 'index' %}" class="search-btn clear-btn" style="text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); color: white;">
+                        <i class="fas fa-times"></i>
+                    </a>
+                {% else %}
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                {% endif %}
+            </form>
+
+            {% if error_message %}
+                <div class="error-msg">
+                    <i class="fas fa-exclamation-circle"></i> {{ error_message }}
+                </div>
+            {% endif %}
+
+            {% if weather_data %}
+                <div class="weather-info animate-fadeIn">
+                    <h1 class="city-name">{{ weather_data.city }}, {{ weather_data.country }}</h1>
+                    <p class="current-date" style="font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem;">{{ weather_data.current_date }}</p>
+                    <p class="description">{{ weather_data.description }}</p>
+                    
+                    <div class="temp-container">
+                        <img src="http://openweathermap.org/img/wn/{{ weather_data.icon }}@4x.png" alt="weather icon" style="width: 100px;">
+                        <span class="temperature">{{ weather_data.temperature }}<span class="unit">°C</span></span>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-thermometer-half"></i>
+                            <span class="detail-value">{{ weather_data.feels_like }}°C</span>
+                            <span class="detail-label">Feels Like</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-droplet"></i>
+                            <span class="detail-value">{{ weather_data.humidity }}%</span>
+                            <span class="detail-label">Humidity</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-wind"></i>
+                            <span class="detail-value">{{ weather_data.wind_speed }} m/s</span>
+                            <span class="detail-label">Wind</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-gauge-high"></i>
+                            <span class="detail-value">{{ weather_data.pressure }} hPa</span>
+                            <span class="detail-label">Pressure</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-eye"></i>
+                            <span class="detail-value">{{ weather_data.visibility }} km</span>
+                            <span class="detail-label">Visibility</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-cloud"></i>
+                            <span class="detail-value">{{ weather_data.clouds }}%</span>
+                            <span class="detail-label">Cloudiness</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-sun"></i>
+                            <span class="detail-value">{{ weather_data.sunrise }}</span>
+                            <span class="detail-label">Sunrise</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-moon"></i>
+                            <span class="detail-value">{{ weather_data.sunset }}</span>
+                            <span class="detail-label">Sunset</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-temperature-arrow-up"></i>
+                            <span class="detail-value">{{ weather_data.temp_max }}° / {{ weather_data.temp_min }}°</span>
+                            <span class="detail-label">Max/Min</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-globe"></i>
+                            <span class="detail-value">{{ weather_data.country }}</span>
+                            <span class="detail-label">Country</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-compass"></i>
+                            <span class="detail-value">{{ weather_data.wind_deg }}°</span>
+                            <span class="detail-label">Wind Dir</span>
+                        </div>
+                        <a href="https://www.google.com/maps?q={{ weather_data.lat }},{{ weather_data.lon }}" target="_blank" class="detail-item explore-item" style="text-decoration: none; color: white;">
+                            <i class="fas fa-map-location-dot"></i>
+                            <span class="detail-value" style="color: var(--accent);">Explore</span>
+                            <span class="detail-label">Maps</span>
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="empty-state" style="margin-top: 2rem; opacity: 0.6;">
+                    <i class="fas fa-cloud-sun" style="font-size: 4rem; margin-bottom: 1rem; display: block;"></i>
+                    <p>Enter a city name to see current weather conditions.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Simple animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const card = document.querySelector('.weather-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.8s ease-out';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

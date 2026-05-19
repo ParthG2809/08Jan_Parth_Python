@@ -1,0 +1,345 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>{% block title %}WatchVerse{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e50914; /* Netflix Red */
+            --accent: #b20710;
+            --bg: #000000;
+            --card-bg: rgba(20, 20, 20, 0.7);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: #fff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .bg-collage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url("{% static 'images/movie_collage.png' %}");
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            filter: blur(4px);
+            transform: scale(1.05);
+        }
+
+        .glass-nav {
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+        }
+
+        .btn-premium {
+            background: var(--primary);
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-premium:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .verdict-badge {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .verdict-peak { background: rgba(255, 215, 0, 0.2); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.3); }
+        .verdict-ww { background: rgba(229, 9, 20, 0.2); color: #ff4d4d; border: 1px solid rgba(229, 9, 20, 0.3); }
+        .verdict-otw { background: rgba(250, 204, 21, 0.2); color: #facc15; border: 1px solid rgba(250, 204, 21, 0.3); }
+        .verdict-skip { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        /* Sliders */
+        .slider-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding-bottom: 1.5rem;
+            scroll-snap-type: x mandatory;
+        }
+
+        .slider-item {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="bg-collage"></div>
+
+    <!-- Navbar -->
+    <nav class="glass-nav fixed top-0 left-0 right-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+            <div class="flex items-center gap-10">
+                <a href="{% url 'home' %}" class="text-2xl font-black tracking-tighter text-[#e50914] italic">WATCHVERSE</a>
+                <div class="hidden md:flex items-center gap-6 text-sm font-bold uppercase tracking-widest text-zinc-400">
+                    <a href="{% url 'explore' %}?category=movies" class="hover:text-white transition-colors">Movies</a>
+                    <a href="{% url 'explore' %}?category=series" class="hover:text-white transition-colors">Series</a>
+                    <a href="{% url 'explore' %}?category=anime" class="hover:text-white transition-colors">Anime</a>
+                    <a href="{% url 'explore' %}?category=ott_originals" class="hover:text-white transition-colors">Originals</a>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <form action="{% url 'search' %}" method="GET" class="relative hidden sm:block" id="nav-search-form">
+                    <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+                    <input type="text" name="q" id="nav-search-input" placeholder="Search movies, anime, actors..." autocomplete="off"
+                           class="bg-white/5 border border-white/10 rounded-full py-2 pl-12 pr-6 text-sm focus:outline-none focus:border-[#e50914]/50 transition-all w-64">
+                    <!-- AJAX Suggestions Dropdown -->
+                    <div id="nav-search-suggestions" class="absolute left-0 right-0 mt-2 bg-zinc-950/95 border border-white/10 rounded-2xl p-2 hidden z-50 shadow-2xl backdrop-blur-xl max-h-96 overflow-y-auto"></div>
+                </form>
+
+                {% if request.user.is_authenticated %}
+                <!-- Notifications -->
+                <button class="relative p-2 text-zinc-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-[#e50914] rounded-full"></span>
+                </button>
+
+                <!-- Profile -->
+                <div class="relative group">
+                    <button class="flex items-center gap-3 p-1 rounded-full hover:bg-white/5 transition-all">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center font-bold text-xs">
+                            {{ request.user.full_name|slice:":1" }}
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-zinc-500 group-hover:text-white"></i>
+                    </button>
+                    <!-- Dropdown -->
+                    <div class="absolute right-0 top-full pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                        <div class="glass-card w-56 rounded-2xl p-2 overflow-hidden">
+                            <a href="{% url 'profile' request.user.email %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors">
+                                <i class="fa-solid fa-user text-zinc-400"></i>
+                                <span class="text-sm font-medium">My Profile</span>
+                            </a>
+                            <a href="{% url 'profile' request.user.email %}?tab=watchlist" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors">
+                                <i class="fa-solid fa-bookmark text-zinc-400"></i>
+                                <span class="text-sm font-medium">Watchlist</span>
+                            </a>
+                            <a href="{% url 'edit-profile' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors">
+                                <i class="fa-solid fa-gear text-zinc-400"></i>
+                                <span class="text-sm font-medium">Settings</span>
+                            </a>
+                            <div class="h-px bg-white/5 my-1"></div>
+                            <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 text-red-400 transition-colors">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span class="text-sm font-medium">Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <!-- Login/Register Buttons -->
+                <div class="flex items-center gap-4">
+                    <a href="{% url 'login' %}" class="text-xs font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors">Login</a>
+                    <a href="{% url 'register' %}" class="btn-premium px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-[#e50914]/20">Register</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-20 mt-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="col-span-1 md:col-span-1 space-y-6">
+                    <a href="#" class="text-2xl font-black tracking-tighter text-[#e50914] italic">WATCHVERSE</a>
+                    <p class="text-zinc-500 text-sm leading-relaxed">
+                        The ultimate community for movie, anime, and series enthusiasts. Track, review, and discover your next obsession.
+                    </p>
+                    <div class="flex items-center gap-4 text-zinc-400">
+                        <a href="#" class="hover:text-blue-500 transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="hover:text-blue-500 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-blue-500 transition-colors"><i class="fa-brands fa-discord"></i></a>
+                        <a href="#" class="hover:text-blue-500 transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <h4 class="text-xs font-black uppercase tracking-[0.2em] text-white">Platform</h4>
+                    <div class="flex flex-col gap-4 text-sm text-zinc-400">
+                        <a href="#" class="hover:text-white transition-colors">Explore</a>
+                        <a href="#" class="hover:text-white transition-colors">Lists</a>
+                        <a href="#" class="hover:text-white transition-colors">Discussions</a>
+                        <a href="#" class="hover:text-white transition-colors">Awards</a>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h4 class="text-xs font-black uppercase tracking-[0.2em] text-white">Community</h4>
+                    <div class="flex flex-col gap-4 text-sm text-zinc-400">
+                        <a href="#" class="hover:text-white transition-colors">Guidelines</a>
+                        <a href="#" class="hover:text-white transition-colors">Moderators</a>
+                        <a href="#" class="hover:text-white transition-colors">Support</a>
+                        <a href="#" class="hover:text-white transition-colors">API</a>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h4 class="text-xs font-black uppercase tracking-[0.2em] text-white">Legal</h4>
+                    <div class="flex flex-col gap-4 text-sm text-zinc-400">
+                        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                        <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+                <p class="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">
+                    &copy; 2026 WATCHVERSE. All rights reserved.
+                </p>
+                <div class="flex items-center gap-6">
+                    <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aae11efab7d2103a45ae4b1d09b60335ccf10f1359339396499878136d.svg" class="h-4" alt="TMDB">
+                    <span class="text-[10px] text-zinc-600 font-bold uppercase tracking-widest">Data provided by TMDB</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+    
+    <!-- Autocomplete AJAX suggestions script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById("nav-search-input");
+            const suggestionsBox = document.getElementById("nav-search-suggestions");
+            let debounceTimeout;
+
+            if (searchInput && suggestionsBox) {
+                searchInput.addEventListener("input", function() {
+                    clearTimeout(debounceTimeout);
+                    const query = searchInput.value.trim();
+
+                    if (query.length < 2) {
+                        suggestionsBox.innerHTML = "";
+                        suggestionsBox.classList.add("hidden");
+                        return;
+                    }
+
+                    debounceTimeout = setTimeout(() => {
+                        fetch(`/search/api/?q=${encodeURIComponent(query)}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                const results = data.results || [];
+                                if (results.length === 0) {
+                                    suggestionsBox.innerHTML = `<div class="p-4 text-center text-xs text-zinc-500 font-bold uppercase tracking-wider">No results found</div>`;
+                                    suggestionsBox.classList.remove("hidden");
+                                    return;
+                                }
+
+                                let html = "";
+                                results.forEach(item => {
+                                    const posterHtml = item.poster_url 
+                                        ? `<img src="${item.poster_url}" class="w-8 h-12 object-cover rounded-md flex-shrink-0" alt="">`
+                                        : `<div class="w-8 h-12 bg-zinc-900 rounded-md flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-clapperboard text-zinc-700 text-xs"></i></div>`;
+                                    
+                                    html += `
+                                        <a href="/media/${item.id}/" class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-xl transition-colors">
+                                            ${posterHtml}
+                                            <div class="overflow-hidden">
+                                                <h4 class="text-xs font-black truncate text-white">${item.title}</h4>
+                                                <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">${item.year ? item.year + ' • ' : ''}${item.media_type}</p>
+                                            </div>
+                                        </a>
+                                    `;
+                                });
+
+                                suggestionsBox.innerHTML = html;
+                                suggestionsBox.classList.remove("hidden");
+                            })
+                            .catch(() => {
+                                suggestionsBox.classList.add("hidden");
+                           });
+                    }, 300);
+               });
+
+               // Hide suggestions when clicking outside
+               document.addEventListener("click", function(e) {
+                   if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                       suggestionsBox.classList.add("hidden");
+                   }
+               });
+
+               // Show suggestions on focus if query has value
+               searchInput.addEventListener("focus", function() {
+                   if (searchInput.value.trim().length >= 2) {
+                       suggestionsBox.classList.remove("hidden");
+                   }
+               });
+           }
+       });
+    </script>
+</body>
+</html>
