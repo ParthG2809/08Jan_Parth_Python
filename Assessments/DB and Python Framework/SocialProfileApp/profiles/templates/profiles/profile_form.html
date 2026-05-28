@@ -1,0 +1,57 @@
+{% extends 'profiles/base.html' %}
+
+{% block title %}{{ title }} | Social Profile Hub{% endblock %}
+
+{% block content %}
+<section class="form-card" id="profile-form-container">
+    <div class="form-header">
+        <h2>{{ title }}</h2>
+        <p>{% if is_edit %}Modify details for {{ profile.first_name }} {{ profile.last_name }}{% else %}Fill in the details to register a new user profile{% endif %}</p>
+    </div>
+
+    <form method="POST" class="profile-management-form" id="profile-management-form">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="form-errors" style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(244, 63, 94, 0.1); border-radius: 8px;">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% for field in form.visible_fields %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">
+                {{ field.label }}
+                {% if field.field.required %}<span style="color: var(--error)">*</span>{% endif %}
+            </label>
+            
+            {{ field }}
+            
+            {% if field.errors %}
+            <div class="form-errors">
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if field.help_text %}
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">{{ field.help_text }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <!-- Form Action Control Bar -->
+        <div class="form-actions">
+            <a href="{% url 'profiles:list' %}" class="btn btn-secondary" id="btn-cancel-form">
+                Cancel
+            </a>
+            <button type="submit" class="btn btn-primary" id="btn-submit-form">
+                {% if is_edit %}Save Changes{% else %}Create Profile{% endif %}
+            </button>
+        </div>
+    </form>
+</section>
+{% endblock %}
